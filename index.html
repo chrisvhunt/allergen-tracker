@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Allergen Tracker</title>
+<meta name="apple-mobile-web-app-title" content="Allergens">
+<meta name="theme-color" content="#F5F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#09090A" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1320x2868.png">
+<link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1206x2622.png">
+<link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1260x2736.png">
+<link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1290x2796.png">
+<link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1179x2556.png">
+<link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1284x2778.png">
+<link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1170x2532.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1125x2436.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/splash-828x1792.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/splash-1242x2688.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/splash-750x1334.png">
+<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/splash-640x1136.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..800;1,7..72,400..700&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Atkinson+Hyperlegible+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Direction: precision instrument. Literata semibold for the human moments (titles, big numbers), Atkinson Hyperlegible for reading, its mono cut for data, hairlines instead of shadows, ink buttons, one brass accent. */
+  --bg:#F5F5F2;
+  --surface:#FFFFFF;
+  --surface-2:#EFEFEB;
+  --ink:#0E0F11;
+  --muted:#686B72;
+  --faint:#A2A4AA;
+  --line:rgba(14,15,17,.08);
+  --line-2:rgba(14,15,17,.16);
+  --accent:#8A6A3C;
+  --accent-soft:rgba(138,106,60,.10);
+  --btn:#0E0F11; --btn-ink:#F7F6F2;
+  --danger:#B3261E; --danger-soft:rgba(179,38,30,.07);
+  --warn:#9C5A0C; --warn-soft:rgba(176,108,20,.09);
+  --ok:#2E7452; --ok-soft:rgba(46,116,82,.08);
+  --sev1:#B08A2E; --sev2:#C26628; --sev3:#B3261E; --sev4:#6A0F22;
+  --shadow:0 1px 0 rgba(14,15,17,.02),0 12px 32px -18px rgba(14,15,17,.18);
+  --display:"Literata","Iowan Old Style",Georgia,serif;
+  --body:"Atkinson Hyperlegible Next",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Atkinson Hyperlegible Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --r-lg:20px; --r-md:14px; --r-sm:10px;
+  --tabbar:rgba(245,245,242,.78);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#09090A; --surface:#131315; --surface-2:#1B1B1E; --ink:#F2F1EC; --muted:#9A9CA2; --faint:#5E6066;
+    --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.15);
+    --accent:#CBA874; --accent-soft:rgba(203,168,116,.12);
+    --btn:#F2F1EC; --btn-ink:#0B0B0C;
+    --danger:#FF6A5C; --danger-soft:rgba(255,106,92,.10); --warn:#E5A24A; --warn-soft:rgba(229,162,74,.10); --ok:#62C292; --ok-soft:rgba(98,194,146,.10);
+    --sev1:#D8B24E; --sev2:#E98A4B; --sev3:#FF6A5C; --sev4:#E2507E;
+    --shadow:0 0 0 1px rgba(255,255,255,.02),0 16px 40px -20px rgba(0,0,0,.8);
+    --tabbar:rgba(9,9,10,.76);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#09090A; --surface:#131315; --surface-2:#1B1B1E; --ink:#F2F1EC; --muted:#9A9CA2; --faint:#5E6066;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.15);
+  --accent:#CBA874; --accent-soft:rgba(203,168,116,.12);
+  --btn:#F2F1EC; --btn-ink:#0B0B0C;
+  --danger:#FF6A5C; --danger-soft:rgba(255,106,92,.10); --warn:#E5A24A; --warn-soft:rgba(229,162,74,.10); --ok:#62C292; --ok-soft:rgba(98,194,146,.10);
+  --sev1:#D8B24E; --sev2:#E98A4B; --sev3:#FF6A5C; --sev4:#E2507E;
+  --shadow:0 0 0 1px rgba(255,255,255,.02),0 16px 40px -20px rgba(0,0,0,.8);
+  --tabbar:rgba(9,9,10,.76);
+  color-scheme:dark;
+}
+/* In-app appearance choice: overrides the host theme and the system setting. */
+:root[data-appearance="light"]{
+  --bg:#F5F5F2;
+  --surface:#FFFFFF;
+  --surface-2:#EFEFEB;
+  --ink:#0E0F11;
+  --muted:#686B72;
+  --faint:#A2A4AA;
+  --line:rgba(14,15,17,.08);
+  --line-2:rgba(14,15,17,.16);
+  --accent:#8A6A3C;
+  --accent-soft:rgba(138,106,60,.10);
+  --btn:#0E0F11; --btn-ink:#F7F6F2;
+  --danger:#B3261E; --danger-soft:rgba(179,38,30,.07);
+  --warn:#9C5A0C; --warn-soft:rgba(176,108,20,.09);
+  --ok:#2E7452; --ok-soft:rgba(46,116,82,.08);
+  --sev1:#B08A2E; --sev2:#C26628; --sev3:#B3261E; --sev4:#6A0F22;
+  --shadow:0 1px 0 rgba(14,15,17,.02),0 12px 32px -18px rgba(14,15,17,.18);
+  --tabbar:rgba(245,245,242,.78);
+  color-scheme:light;
+}
+:root[data-appearance="dark"]{
+  --bg:#09090A; --surface:#131315; --surface-2:#1B1B1E; --ink:#F2F1EC; --muted:#9A9CA2; --faint:#5E6066;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.15);
+  --accent:#CBA874; --accent-soft:rgba(203,168,116,.12);
+  --btn:#F2F1EC; --btn-ink:#0B0B0C;
+  --danger:#FF6A5C; --danger-soft:rgba(255,106,92,.10); --warn:#E5A24A; --warn-soft:rgba(229,162,74,.10); --ok:#62C292; --ok-soft:rgba(98,194,146,.10);
+  --sev1:#D8B24E; --sev2:#E98A4B; --sev3:#FF6A5C; --sev4:#E2507E;
+  --shadow:0 0 0 1px rgba(255,255,255,.02),0 16px 40px -20px rgba(0,0,0,.8);
+  --tabbar:rgba(9,9,10,.76);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;min-height:100%;padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 112px)}
+.eyebrow{font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+h1.title{font-family:var(--display);font-weight:650;font-size:42px;line-height:1.05;margin:10px 0 24px;letter-spacing:-.02em;text-wrap:balance;font-optical-sizing:auto}
+h2.sec{font-family:var(--body);font-size:13.5px;font-weight:700;color:color-mix(in srgb,var(--ink) 72%,var(--bg));text-transform:uppercase;letter-spacing:.04em;margin:34px 2px 10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+h2.sec::after{content:"";flex:1;height:1px;background:var(--line);order:1}
+h2.sec button{order:2;font-family:var(--body);font-size:14px;text-transform:none;letter-spacing:-.005em;color:var(--accent);font-weight:500}
+.stack{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.pad{padding:18px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono);letter-spacing:0}
+.ico{width:21px;height:21px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ico.sm{width:15px;height:15px;stroke-width:1.7}
+.ico.lg{width:28px;height:28px}
+
+/* sample banner */
+.banner{display:flex;gap:12px;align-items:center;border:1px dashed var(--line-2);color:var(--ink);border-radius:var(--r-md);padding:12px 12px 12px 16px;margin-bottom:18px;font-size:14px;background:transparent}
+.banner .ico{display:none}
+.banner b{display:block;font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.banner div{color:var(--muted);line-height:1.35}
+.banner .btn{margin-left:auto;flex:none}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;background:var(--btn);color:var(--btn-ink);font-weight:500;font-size:15px;transition:transform .15s ease,opacity .15s,background .2s}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{height:34px;padding:0 14px;font-size:13.5px}
+.btn.block{width:100%;height:54px;font-size:16px;border-radius:16px}
+.linkbtn{color:var(--accent);font-weight:500}
+
+/* hero */
+.hero{padding:22px 22px 18px}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero .big{font-family:var(--display);font-weight:600;font-size:88px;line-height:.9;letter-spacing:-.03em;margin:14px 0 4px;display:flex;align-items:baseline;gap:12px;font-variant-numeric:lining-nums}
+.hero .big .unit{font-family:var(--display);font-style:italic;font-weight:500;font-size:26px;letter-spacing:-.01em;color:var(--muted)}
+.hero .lede{font-size:14px;color:var(--muted);margin:2px 0 18px}
+.strip{display:grid;grid-template-columns:repeat(30,1fr);gap:3px;align-items:end;height:30px}
+.strip i{display:block;height:4px;border-radius:2px;background:var(--surface-2)}
+.strip i.e{height:10px;background:color-mix(in srgb,var(--ink) 22%,transparent)}
+.strip i.a{height:14px;background:var(--warn)}
+.strip i.r{height:30px;background:var(--danger)}
+.strip i.today{outline:1px solid var(--ink);outline-offset:1px}
+.strip-legend{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:var(--body);font-size:12px;color:var(--faint);letter-spacing:.04em;gap:10px}
+.strip-legend{flex-wrap:wrap}
+.strip-legend>span{white-space:nowrap}
+.strip-legend .keys{display:flex;gap:14px;order:3;width:100%;margin-top:4px}
+.strip-legend .keys span{display:inline-flex;align-items:center;gap:5px}
+.strip-legend .keys i{width:7px;height:7px;border-radius:2px;display:inline-block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.stats div{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px}
+.stats div+div{border-left:1px solid var(--line)}
+.stats b{font-family:var(--display);font-size:28px;line-height:1;font-weight:650;font-variant-numeric:lining-nums tabular-nums}
+.stats span{font-family:var(--body);font-size:13px;color:var(--muted);line-height:1.3}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qbtn{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:18px;text-align:left;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s,border-color .2s}
+.qbtn:active{transform:scale(.98);border-color:var(--line-2)}
+.qbtn .badge{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--ink)}
+.qbtn.rx .badge{border-color:color-mix(in srgb,var(--danger) 40%,transparent);color:var(--danger)}
+.qbtn b{font-size:16px;font-weight:500;letter-spacing:-.01em}
+.qbtn span{font-size:13px;color:var(--muted);line-height:1.35}
+
+/* list rows */
+.list{background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;width:100%;text-align:left;position:relative;transition:background .15s}
+.row+.row{border-top:1px solid var(--line)}
+.row:active{background:var(--surface-2)}
+.row .tm{width:54px;flex:none;font-family:var(--mono);font-size:12.5px;color:var(--muted);padding-top:9px;letter-spacing:0}
+.row .ic{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--muted)}
+.row .ic.rx{border-color:color-mix(in srgb,var(--danger) 45%,transparent);color:var(--danger);background:var(--danger-soft)}
+.row .ic.hit{border-color:color-mix(in srgb,var(--warn) 45%,transparent);color:var(--warn)}
+.row .ic.hit3{border-color:color-mix(in srgb,var(--danger) 45%,transparent);color:var(--danger)}
+.row .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding-top:2px}
+.row .main b{font-weight:500;font-size:16px;letter-spacing:-.01em;overflow-wrap:anywhere}
+.row .main .sub{font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row .main .chips{margin-top:3px}
+.row .chev{color:var(--faint);padding-top:9px}
+.dayhead{font-family:var(--body);font-size:12px;font-weight:600;color:var(--muted);margin:28px 2px 10px;text-transform:uppercase;letter-spacing:.05em}
+.empty{padding:32px 24px;text-align:center;color:var(--muted);font-size:15px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.empty .ico{width:30px;height:30px;color:var(--faint);margin-bottom:4px}
+
+/* chips & pills */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:3px 9px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--muted);line-height:1.35}
+.chip.s1{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sev1) 45%,transparent);color:var(--sev1)}
+.chip.s2{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sev2) 45%,transparent);color:var(--sev2)}
+.chip.s3{box-shadow:none;background:var(--sev3);color:#fff}
+.chip.s4{box-shadow:none;background:var(--sev4);color:#fff}
+.chip.acc{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent)}
+.chip.ok{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ok) 40%,transparent);color:var(--ok)}
+.tog{font-size:14px;font-weight:450;padding:9px 14px;border-radius:999px;background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2);transition:all .15s}
+.tog.on{background:var(--btn);color:var(--btn-ink);box-shadow:none}
+.tog.dangerous.on{background:var(--danger);color:#fff}
+.dot{width:8px;height:8px;border-radius:2px;flex:none;display:inline-block}
+
+/* segmented */
+.seg{display:flex;background:var(--surface-2);border-radius:13px;padding:3px;gap:2px}
+.seg button{flex:1;min-height:36px;border-radius:10px;font-size:14px;font-weight:500;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 6px;transition:all .15s}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 1px var(--line)}
+.seg.types button{flex-direction:column;gap:5px;font-size:12.5px;min-height:62px}
+.seg.sev button.on[data-v="1"]{color:var(--sev1)} .seg.sev button.on[data-v="2"]{color:var(--sev2)}
+.seg.sev button.on[data-v="3"]{color:var(--sev3)} .seg.sev button.on[data-v="4"]{color:var(--sev4)}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--tabbar);backdrop-filter:saturate(160%) blur(24px);-webkit-backdrop-filter:saturate(160%) blur(24px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;height:64px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--faint);height:100%;justify-content:center;position:relative;transition:color .2s}
+.tab.on{color:var(--ink)}
+.tab.on::after{content:"";position:absolute;top:6px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.fab{justify-self:center;width:52px;height:52px;border-radius:50%;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);transition:transform .15s}
+.fab:active{transform:scale(.93)}
+.fab .ico{width:22px;height:22px;stroke-width:1.8}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(5,6,8,.38);opacity:0;pointer-events:none;transition:opacity .3s;z-index:40;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.scrim.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:520px;margin:0 auto;max-height:calc(100% - env(safe-area-inset-top) - 20px);background:var(--bg);border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.85,.25,1);display:flex;flex-direction:column;box-shadow:0 -1px 0 var(--line),0 -20px 60px rgba(0,0,0,.2)}
+.sheet:not(.open){visibility:hidden;transition:transform .38s cubic-bezier(.2,.85,.25,1),visibility 0s linear .38s}
+.sheet.open{transform:none}
+.grab{padding:9px 0 3px;display:grid;place-items:center;touch-action:none;cursor:grab}
+.grab::before{content:"";width:36px;height:4px;border-radius:2px;background:var(--line-2)}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px calc(env(safe-area-inset-bottom) + 28px);overscroll-behavior:contain}
+.sh-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8px 0 14px;margin-bottom:8px;position:sticky;top:0;background:var(--bg);z-index:2;border-bottom:1px solid var(--line)}
+.sh-head h3{margin:0;font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;text-align:center;color:var(--muted)}
+.sh-head .l{justify-self:start;color:var(--muted);font-size:16px}
+.sh-head .r{justify-self:end;color:var(--ink);font-size:16px;font-weight:600}
+.sh-title{font-family:var(--display);font-size:32px;line-height:1.1;margin:6px 0 8px;font-weight:650;letter-spacing:-.02em;text-wrap:balance}
+
+/* forms */
+.form{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field>span,.flabel{font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-left:2px}
+input[type=text],input:not([type]),input[type=datetime-local],textarea,select{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-md);padding:13px 15px;width:100%;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 8%,transparent)}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+input[type=datetime-local]{min-height:50px;font-family:var(--mono);font-size:15px}
+textarea{resize:vertical;min-height:50px;line-height:1.45}
+.row2{display:grid;grid-template-columns:1.3fr 1fr;gap:10px}
+.group{display:flex;flex-direction:column;gap:8px}
+.group .gl{font-size:12.5px;font-weight:500;color:var(--faint);padding-left:2px}
+
+/* alerts */
+.alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line-2);align-items:flex-start;position:relative}
+.alert .ico{margin-top:1px}
+.alert b{display:block;font-size:15px;font-weight:600;margin-bottom:3px;letter-spacing:-.01em}
+.alert p{margin:0;font-size:14px;color:var(--muted);line-height:1.45}
+.alert.danger{background:var(--danger-soft);border-color:color-mix(in srgb,var(--danger) 35%,transparent);color:var(--danger)}
+.alert.danger::before{content:"";position:absolute;left:-1px;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:var(--danger)}
+.alert.danger p{color:color-mix(in srgb,var(--danger) 70%,var(--ink))}
+.alert.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 30%,transparent);color:var(--warn)}
+.alert.warn p{color:color-mix(in srgb,var(--warn) 60%,var(--ink))}
+.alert.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 25%,transparent);color:var(--ok)}
+.alert.ok p{color:color-mix(in srgb,var(--ok) 55%,var(--ink))}
+.alert.sos{background:var(--sev4);color:#fff;border:0}
+.alert.sos p{color:rgba(255,255,255,.88)}
+.alerts{display:flex;flex-direction:column;gap:8px}
+.pulse{animation:pulse .45s ease}
+@keyframes pulse{0%{transform:translateY(4px);opacity:.4}100%{transform:none;opacity:1}}
+
+/* RCA */
+.rca-top{padding:22px 20px 14px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.ring{width:84px;height:84px;position:relative;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:650;font-size:28px;font-variant-numeric:lining-nums;letter-spacing:-.02em}
+.ring .v small{font-family:var(--mono);color:var(--muted);margin-left:1px}
+.rca-top .k{font-family:var(--body);font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.rca-top .n{font-family:var(--display);font-weight:650;font-size:30px;line-height:1.1;margin:6px 0 10px;letter-spacing:-.02em}
+.ev{list-style:none;margin:0;padding:4px 20px 18px;display:flex;flex-direction:column;gap:9px;font-size:14px}
+.ev li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.ev li .ico{margin-top:2px;color:var(--faint)}
+.ev li.pos .ico{color:var(--danger)}
+.ev li.neg .ico{color:var(--ok)}
+.cand{border-top:1px solid var(--line)}
+.cand summary{list-style:none;display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:14px 20px;cursor:pointer}
+.cand summary::-webkit-details-marker{display:none}
+.cand summary b{font-weight:500}
+.cand summary .pct{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bar{grid-column:1/-1;height:3px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:var(--ink)}
+.bar.d i{background:var(--danger)}
+.bar.w i{background:var(--warn)}
+.kind{font-family:var(--body);font-size:12px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-left:8px}
+.cand .ev{padding:0 20px 14px}
+.cand .acts{padding:0 20px 16px}
+.confirmed{display:flex;align-items:center;gap:10px;padding:12px 20px;background:var(--accent-soft);color:var(--accent);font-weight:500;font-size:14px;border-bottom:1px solid var(--line)}
+.confirmed button{margin-left:auto;font-weight:500;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.foot{font-size:12.5px;color:var(--muted);padding:4px 4px;line-height:1.5}
+
+/* insights */
+.trig{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:15px 18px;align-items:center}
+.trig+.trig{border-top:1px solid var(--line)}
+.trig b{font-weight:500;font-size:16px}
+.trig>.num{font-family:var(--display)!important;font-size:24px;font-weight:650!important;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.trig .meta{grid-column:1/-1;font-size:12.5px;color:var(--muted)}
+.chart{padding:18px 14px 12px}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:12px;font-family:var(--mono)}
+.hbar{display:grid;grid-template-columns:120px 1fr 24px;gap:12px;align-items:center;padding:8px 18px;font-size:14px}
+.hbar .t{height:3px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--ink);border-radius:2px}
+.hbar .c{text-align:right;color:var(--muted);font-family:var(--mono);font-size:12px}
+
+/* allergens */
+.alg{display:flex;gap:14px;align-items:center;padding:16px 18px;width:100%;text-align:left}
+.alg+.alg{border-top:1px solid var(--line)}
+.alg .sw{width:3px;align-self:stretch;border-radius:2px;flex:none}
+.alg .main{flex:1;min-width:0}
+.alg .main b{font-family:var(--display);font-size:20px;font-weight:650;display:block;letter-spacing:-.005em;line-height:1.2;margin-bottom:2px}
+.alg .main span{font-size:13px;color:var(--muted)}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.preset{padding:12px 8px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line-2);font-size:14px;font-weight:450;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-height:58px;justify-content:center;transition:all .15s}
+.preset:active{transform:scale(.97)}
+.preset.added{border-color:var(--ink);background:var(--btn);color:var(--btn-ink)}
+.settings .srow{display:flex;align-items:center;gap:14px;padding:15px 18px;width:100%;text-align:left}
+.settings .srow+.srow{border-top:1px solid var(--line)}
+.settings .srow .ico{color:var(--muted)}
+.settings .srow.dz .ico,.settings .srow.dz{color:var(--danger)}
+.settings .srow span{flex:1}
+.settings .srow em{font-style:normal;color:var(--faint);font-family:var(--body);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 88px);transform:translate(-50%,16px);opacity:0;z-index:60;background:var(--btn);color:var(--btn-ink);padding:11px 16px;border-radius:999px;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center;transition:all .3s cubic-bezier(.2,.85,.25,1);pointer-events:none;max-width:calc(100% - 40px);box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.danger{background:var(--danger);color:#fff}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;padding:16px 18px;font-size:15px;margin:0}
+.kv dt{font-family:var(--body);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.kv dd{margin:0;overflow-wrap:anywhere}
+.tl{position:relative;padding:6px 18px 10px}
+.tl::before{content:"";position:absolute;left:96px;top:18px;bottom:18px;width:1px;background:var(--line-2)}
+.tl .it{display:grid;grid-template-columns:70px 1fr;gap:18px;padding:10px 0;font-size:14px;position:relative}
+.tl .it::after{content:"";position:absolute;left:75px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1.5px var(--faint)}
+.tl .it.r::after{background:var(--danger);box-shadow:0 0 0 3px var(--danger-soft)}
+.tl .it .g{color:var(--muted);font-family:var(--mono);font-size:12px;padding-top:2px;text-align:right}
+.tl .it.r b{color:var(--danger);font-weight:600}
+pre.report{white-space:pre-wrap;font:12.5px/1.55 var(--mono);background:var(--surface);padding:16px;border-radius:var(--r-md);border:1px solid var(--line);margin:0;user-select:text;-webkit-user-select:text}
+.search{position:relative}
+.search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.search input{padding-left:42px;background:var(--surface)}
+
+
+/* launch screen */
+.launch{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(120% 70% at 50% 35%,#1E2126,#09090A);transition:opacity .5s ease .1s,visibility 0s linear .6s}
+.launch.gone{opacity:0;visibility:hidden}
+.launch .wm{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:-.01em;color:#F2F1EC;opacity:0;transform:translateY(6px);animation:rise .6s cubic-bezier(.2,.85,.25,1) .15s forwards}
+.launch .tg{font-family:var(--body);font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0;text-align:center;max-width:270px;text-wrap:balance;color:#CBA874;opacity:0;animation:rise .6s cubic-bezier(.2,.85,.25,1) .3s forwards}
+.launch svg{animation:rise .6s cubic-bezier(.2,.85,.25,1) both}
+/* install guide */
+.install{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:var(--r-lg);border:1px solid var(--line-2);background:var(--surface);box-shadow:var(--shadow);margin-bottom:18px}
+.install .hd{display:flex;gap:12px;align-items:center}
+.install .hd img{width:44px;height:44px;border-radius:11px}
+.install .hd b{font-family:var(--display);font-weight:650;font-size:19px;display:block}
+.install .hd span{font-size:13.5px;color:var(--muted)}
+.install ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:st}
+.install li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4;counter-increment:st}
+.install li::before{content:counter(st);flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--btn);color:var(--btn-ink);font-size:12.5px;font-weight:700;margin-top:-1px}
+.install .ico{vertical-align:-4px;color:var(--accent)}
+/* entrance */
+.enter>*{animation:rise .55s cubic-bezier(.2,.85,.25,1) both}
+.enter>*:nth-child(2){animation-delay:.04s}.enter>*:nth-child(3){animation-delay:.08s}.enter>*:nth-child(4){animation-delay:.12s}
+.enter>*:nth-child(5){animation-delay:.16s}.enter>*:nth-child(6){animation-delay:.2s}.enter>*:nth-child(n+7){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="launch" id="launch" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="88" height="88">
+<defs>
+<radialGradient id="lbg" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#25282E"/><stop offset="1" stop-color="#0A0B0D"/></radialGradient>
+<linearGradient id="lbr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBD3A0"/><stop offset=".55" stop-color="#C9A56E"/><stop offset="1" stop-color="#9C7A48"/></linearGradient>
+</defs>
+
+<g transform="translate(152 140) scale(30)" fill="none" stroke="url(#lbr)" stroke-linejoin="round" stroke-linecap="round">
+<path d="M12 3 4.5 6v6c0 4.4 3.2 8.2 7.5 9 4.3-.8 7.5-4.6 7.5-9V6z" stroke-width="1.15"/>
+<circle cx="12" cy="12.4" r="3.2" stroke-width=".8"/>
+<circle cx="12" cy="12.4" r="1.15" fill="url(#lbr)" stroke="none"/>
+</g></svg><div class="wm">Allergen Tracker</div><div class="tg">The proactive solution to your allergy reactions</div></div>
+<div class="app" id="app"><div id="view"></div></div>
+
+<nav class="tabbar" aria-label="Main">
+  <div class="in">
+    <button class="tab" data-act="tab" data-tab="today" id="t-today"><svg class="ico" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today</button>
+    <button class="tab" data-act="tab" data-tab="log" id="t-log"><svg class="ico" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Log</button>
+    <button class="fab" data-act="add" aria-label="Add entry"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="tab" data-act="tab" data-tab="insights" id="t-insights"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg>Insights</button>
+    <button class="tab" data-act="tab" data-tab="allergens" id="t-allergens"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.4 3.2 8.2 7.5 9 4.3-.8 7.5-4.6 7.5-9V6z"/></svg>Allergens</button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim" data-act="close"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab" id="grab"></div><div class="sheet-body" id="sheetBody"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* ============================================================ knowledge base */
+const DICT = [
+  {id:"milk",name:"Milk",g:"food",kw:["dairy","butter","cheese","cream","whey","casein","caseinate","lactose","lactalbumin","ghee","yogurt","yoghurt","kefir","curd","custard","paneer","ricotta","mozzarella","parmesan","cheddar","feta","brie","ice cream","latte","cappuccino","alfredo","queso","buttermilk","creme fraiche","sour cream","milk chocolate","bechamel"],ex:["coconut milk","oat milk","almond milk","soy milk","rice milk","cashew milk","coconut cream","cocoa butter","peanut butter","almond butter","shea butter","cream of tartar"]},
+  {id:"egg",name:"Egg",g:"food",kw:["eggs","albumin","albumen","mayonnaise","mayo","meringue","ovalbumin","lysozyme","aioli","hollandaise","custard","eggnog","frittata","omelet","omelette","quiche","brioche","carbonara","french toast","egg noodles"]},
+  {id:"peanut",name:"Peanut",g:"food",kw:["peanuts","groundnut","arachis","satay","monkey nuts","peanut butter","peanut oil","peanut sauce","goober","pad thai","kung pao"]},
+  {id:"treenut",name:"Tree nuts",g:"food",kw:["almond","almonds","cashew","walnut","pecan","pistachio","hazelnut","macadamia","brazil nut","pine nut","pine nuts","pesto","praline","marzipan","nutella","gianduja","frangipane","baklava","nougat","filbert","amaretto","mixed nuts","almond milk","cashew milk","almond flour","nut butter"]},
+  {id:"soy",name:"Soy",g:"food",kw:["soya","soybean","soybeans","tofu","edamame","miso","tempeh","tamari","soy sauce","shoyu","soy lecithin","teriyaki","natto","soy milk"]},
+  {id:"wheat",name:"Wheat / Gluten",g:"food",kw:["wheat","flour","bread","pasta","gluten","semolina","durum","spelt","couscous","bulgur","seitan","farina","noodle","noodles","linguine","spaghetti","tortilla","flour tortilla","cracker","crackers","cake","cookie","pastry","croissant","bagel","pizza","breadcrumbs","panko","croutons","barley","rye","malt","beer","pancake","waffle","bun","toast","muffin","granola","pretzel","dumpling","ramen","udon","tempura","sandwich","burger bun","bolognese","lasagna"],ex:["buckwheat","rice noodles","corn tortilla","rice paper"]},
+  {id:"fish",name:"Fish",g:"food",kw:["salmon","tuna","cod","anchovy","anchovies","worcestershire","caesar dressing","fish sauce","nam pla","sardine","tilapia","halibut","trout","haddock","mackerel","sea bass","snapper","surimi","bonito","dashi","caviar","roe","pollock","catfish","swordfish"]},
+  {id:"shellfish",name:"Shellfish",g:"food",kw:["shrimp","prawn","prawns","crab","lobster","crayfish","crawfish","langoustine","scallop","clam","clams","mussel","mussels","oyster","oysters","squid","calamari","octopus","scampi","krill","oyster sauce","shrimp paste","paella","cioppino","bouillabaisse","seafood"]},
+  {id:"sesame",name:"Sesame",g:"food",kw:["tahini","hummus","halva","halvah","benne","gomasio","za'atar","zaatar","sesame oil","furikake","sesame seeds"]},
+  {id:"mustard",name:"Mustard",g:"food",kw:["mustard seed","dijon","honey mustard"]},
+  {id:"penicillin",name:"Penicillin",g:"med",kw:["amoxicillin","ampicillin","augmentin","dicloxacillin","piperacillin","penicillin vk","nafcillin","oxacillin"]},
+  {id:"sulfa",name:"Sulfa drugs",g:"med",kw:["sulfamethoxazole","bactrim","septra","sulfasalazine","sulfonamide","sulfadiazine"]},
+  {id:"nsaid",name:"NSAIDs",g:"med",kw:["ibuprofen","advil","motrin","naproxen","aleve","aspirin","diclofenac","celecoxib","meloxicam","ketorolac","nsaid"]},
+  {id:"latex",name:"Latex",g:"env",kw:["rubber","balloon","balloons","latex gloves","rubber gloves"]},
+  {id:"cat",name:"Cat dander",g:"env",kw:["cat","cats","kitten","kittens","feline","litter box"]},
+  {id:"dog",name:"Dog dander",g:"env",kw:["dog","dogs","puppy","puppies","canine"],ex:["hot dog","corn dog","hot dogs","corn dogs"]},
+  {id:"pollen",name:"Pollen",g:"env",kw:["grass","ragweed","birch","oak","mowing","hay","hayfever","tree pollen","flowers","pollen count"]},
+  {id:"dust",name:"Dust mites",g:"env",kw:["dust","dusty","dusting","vacuuming","mites","bedding","carpet"]},
+  {id:"mold",name:"Mold",g:"env",kw:["mould","mildew","basement","damp","musty"]},
+  {id:"insect",name:"Insect stings",g:"env",kw:["bee","bees","wasp","hornet","yellow jacket","sting","stung","fire ant"]},
+  {id:"nickel",name:"Nickel",g:"env",kw:["jewelry","jewellery","earring","earrings","belt buckle","watch band","costume jewelry"]},
+  {id:"fragrance",name:"Fragrance",g:"env",kw:["perfume","parfum","cologne","scented","air freshener","candle"]},
+  {id:"sulfite",name:"Sulfites",g:"food",kw:["sulfite","sulphite","metabisulfite","sulfur dioxide","wine","dried fruit","dried apricots"]}
+];
+const DICT_BY = Object.fromEntries(DICT.map(d=>[d.id,d]));
+const CROSS = [
+  {a:"pollen",kw:["apple","pear","cherry","peach","plum","carrot","celery","kiwi","banana","melon","tomato"],note:"Pollen–food syndrome: people with pollen allergy often react to some raw fruits and vegetables."},
+  {a:"latex",kw:["banana","avocado","kiwi","chestnut","papaya"],note:"Latex–fruit syndrome: these foods share proteins with latex."},
+  {a:"dust",kw:["shrimp","prawn","lobster","crab","crawfish"],note:"Dust-mite and shellfish proteins (tropomyosin) can cross-react."},
+  {a:"shellfish",kw:["dust mites","cockroach"],note:"Shellfish and dust-mite proteins can cross-react."},
+  {a:"peanut",kw:["lupin","lupine","lupini","pea protein"],note:"Lupin and pea are legumes that can cross-react with peanut."},
+  {a:"penicillin",kw:["cephalexin","keflex","cefdinir","cefuroxime","ceftriaxone","cephalosporin"],note:"A small share of people with penicillin allergy also react to cephalosporins."},
+  {a:"milk",kw:["goat milk","goat cheese","sheep milk","sheep cheese","manchego","pecorino"],note:"Goat and sheep milk proteins closely resemble cow's milk."},
+  {a:"treenut",kw:["coconut"],note:"Coconut is rarely a problem for tree-nut allergy, but check with your allergist."},
+  {a:"fish",kw:["fish oil","omega-3","gelatin"],note:"Fish-derived supplements or gelatin can carry fish protein."}
+];
+const TYPES = [
+  {id:"food",label:"Food & drink",short:"Food",route:"ingest",icon:"food"},
+  {id:"med",label:"Medication",short:"Medicine",route:"ingest",icon:"pill"},
+  {id:"skin",label:"Skin contact",short:"Contact",route:"contact",icon:"drop"},
+  {id:"env",label:"Environment",short:"Environ.",route:"inhale",icon:"wind"},
+  {id:"other",label:"Other",short:"Other",route:"ingest",icon:"dots"}
+];
+const TYPE_BY = Object.fromEntries(TYPES.map(t=>[t.id,t]));
+const SYMPTOMS = [
+  {g:"Skin",items:["Hives","Itching","Rash","Flushing","Lip or face swelling","Eczema flare"]},
+  {g:"Nose & eyes",items:["Sneezing","Runny or stuffy nose","Itchy, watery eyes"]},
+  {g:"Breathing",items:["Throat tightness","Wheezing","Short of breath","Coughing","Hoarse voice","Tongue swelling"]},
+  {g:"Stomach",items:["Tingling mouth","Nausea","Vomiting","Stomach cramps","Diarrhea"]},
+  {g:"Whole body",items:["Dizziness","Fainting","Racing heart","Sense of doom","Headache","Fatigue"]}
+];
+const DANGER_SX = new Set(["Throat tightness","Wheezing","Short of breath","Hoarse voice","Tongue swelling","Fainting","Sense of doom"]);
+const TREATMENTS = ["None","Antihistamine","Epinephrine","Inhaler","Steroid","Urgent care / ER"];
+const DURATIONS = ["Under 30 min","30–60 min","1–3 hours","3–12 hours","12–24 hours","Over a day","Still going"];
+const SEV = ["","Mild","Moderate","Severe","Anaphylactic"];
+const RSEV = ["","Mild","Moderate","Severe","Life-threatening"];
+const STOP = new Set(["water","salt","sea salt","pepper","black pepper","sugar","ice","spices","seasoning","natural flavors","natural flavor","to taste","and","with"]);
+
+/* ============================================================ state */
+const KEY = "allergen-tracker.v1";
+const S = {allergens:[],exposures:[],reactions:[],settings:{win:24},demo:false,started:false};
+let TAB = (location.hash||"").replace("#","");
+if(!["today","log","insights","allergens"].includes(TAB)) TAB="today";
+let LOGFILTER="all", LOGQ="";
+let VER=0; const bump=()=>{VER++;};
+let col=null, syncState="local";
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function loadLocal(){try{const j=JSON.parse(localStorage.getItem(KEY)||"null");return j}catch(e){return null}}
+function saveLocal(){if(S.demo)return;try{localStorage.setItem(KEY,JSON.stringify({allergens:S.allergens,exposures:S.exposures,reactions:S.reactions,settings:S.settings,started:true}))}catch(e){}}
+const chains={};
+function dbOp(key,fn){if(!col||S.demo)return;chains[key]=(chains[key]||Promise.resolve()).then(()=>fn(col.doc(key))).catch(err=>{
+  if(err&&err.code==="quota_exceeded")toast("Storage is full. Delete old entries to keep saving.",true);
+  else if(err&&err.code==="unavailable"){return new Promise(r=>setTimeout(r,600+Math.random()*600)).then(()=>fn(col.doc(key))).catch(()=>{})}
+});}
+function persistProfile(){saveLocal();dbOp("profile",d=>d.set({allergens:S.allergens,settings:S.settings,started:true}))}
+function persistExp(e){saveLocal();dbOp("x-"+e.id,d=>d.set(e))}
+function persistRx(r){saveLocal();dbOp("r-"+r.id,d=>d.set(r))}
+function removeDoc(key){saveLocal();dbOp(key,d=>d.delete())}
+
+/* ============================================================ helpers */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function norm(s){return String(s||"").toLowerCase().replace(/[’`]/g,"'").replace(/[^\p{L}\p{N}\s'&+-]/gu," ").replace(/\s+/g," ").trim()}
+function cap(s){s=String(s||"");return s.charAt(0).toUpperCase()+s.slice(1)}
+function uniq(a){return [...new Set(a.filter(Boolean))]}
+const RE=new Map();
+function kwRe(kw){let r=RE.get(kw);if(!r){const k=norm(kw).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");r=new RegExp("(?:^|[^\\p{L}\\p{N}])"+k+"(?:s|es)?(?=$|[^\\p{L}\\p{N}])","u");RE.set(kw,r)}return r}
+const HOUR=3600e3, DAY=86400e3;
+function p2(n){return String(n).padStart(2,"0")}
+function toInput(ts){const d=new Date(ts);return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())+"T"+p2(d.getHours())+":"+p2(d.getMinutes())}
+function fromInput(v){const t=new Date(v).getTime();return isNaN(t)?Date.now():t}
+function fmtTime(ts){return new Date(ts).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}
+function startOfDay(ts){const d=new Date(ts);d.setHours(0,0,0,0);return d.getTime()}
+function fmtDay(ts){const t0=startOfDay(Date.now()),d=startOfDay(ts);if(d===t0)return "Today";if(d===t0-DAY)return "Yesterday";
+  return new Date(ts).toLocaleDateString([], {weekday:"short",month:"short",day:"numeric",year:new Date(ts).getFullYear()!==new Date().getFullYear()?"numeric":undefined})}
+function fmtWhen(ts){return fmtDay(ts)+", "+fmtTime(ts)}
+function fmtGap(h){if(h<1/60)return "at the same time";const m=Math.round(h*60);if(m<60)return m+" min";const hh=Math.floor(m/60),mm=m%60;if(hh>=24){const d=Math.floor(hh/24),r=hh%24;return d+"d"+(r?" "+r+"h":"")}return hh+"h"+(mm?" "+mm+"m":"")}
+function plural(n,w,p){return n+" "+(n===1?w:(p||w+"s"))}
+
+const ICONS={
+  food:'<path d="M7 3v8M4.5 3v5a2.5 2.5 0 0 0 5 0V3M7 11v10M17 21v-8c-2 0-3-1.5-3-5s1.5-5 3-5v18"/>',
+  pill:'<path d="M10.5 4.5a4.95 4.95 0 0 1 7 7l-6 6a4.95 4.95 0 0 1-7-7z"/><path d="M7.5 7.5l7 7"/>',
+  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>',
+  wind:'<path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/>',
+  dots:'<circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>',
+  alert:'<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.1"/>',
+  bolt:'<path d="M13 2 4.5 13.5H11L10 22l9-12h-6.5z"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  chev:'<path d="M9 6l6 6-6 6"/>',
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  shield:'<path d="M12 3 4.5 6v6c0 4.4 3.2 8.2 7.5 9 4.3-.8 7.5-4.6 7.5-9V6z"/>',
+  doc:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+  download:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  upload:'<path d="M12 20V9M7 14l5-5 5 5M5 4h14"/>',
+  history:'<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4h4M12 8v4l3 2"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  cloud:'<path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4.25 4.25 0 0 1-.5 8.5z"/>',
+  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8v.1"/>',
+  spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  sos:'<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.1"/>'
+};
+function icon(n,c){return '<svg class="ico '+(c||"")+'" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||"")+"</svg>"}
+
+/* ============================================================ detection */
+let CATS=[], CATS_BY=new Map(), CAT_VER=-1;
+function catId(a){return a.preset||("c-"+a.id)}
+function categories(){
+  if(CAT_VER===VER)return CATS;
+  const out=[],used=new Set();
+  for(const a of S.allergens){const p=a.preset&&DICT_BY[a.preset];const id=catId(a);used.add(id);
+    out.push({id,name:a.name,kw:uniq([a.name,...(p?[p.name,...p.kw]:[]),...(a.keywords||[])]),ex:p&&p.ex||[],declared:a});}
+  for(const d of DICT)if(!used.has(d.id))out.push({id:d.id,name:d.name,kw:uniq([d.name,...d.kw]),ex:d.ex||[],declared:null});
+  CATS=out;CATS_BY=new Map(out.map(c=>[c.id,c]));CAT_VER=VER;COMP=new WeakMap();
+  return out;
+}
+function detectText(t){
+  const hits=[];
+  for(const c of categories()){
+    let tt=t; for(const x of c.ex)if(tt.includes(x))tt=tt.split(x).join(" ");
+    for(const k of c.kw){if(kwRe(k).test(tt)){hits.push({cat:c,kw:k});break;}}
+  }
+  return hits;
+}
+function ingTokens(s){return uniq(String(s||"").split(/[,;\n/()]|\band\b|\bwith\b/).map(x=>norm(x).replace(/^\d+(\.\d+)?\s*(mg|g|ml|oz|cups?|tbsp|tsp)?\s*/,"")).filter(x=>x.length>=2&&x.length<=40&&!STOP.has(x)))}
+let COMP=new WeakMap(); const LABEL=new Map();
+function comps(e){
+  categories();
+  let c=COMP.get(e); if(c)return c;
+  const set=new Set();
+  const text=norm((e.name||"")+" , "+(e.ingredients||""));
+  for(const h of detectText(text)){set.add("a:"+h.cat.id);LABEL.set("a:"+h.cat.id,h.cat.name)}
+  for(const m of (e.manual||[])){if(CATS_BY.has(m)){set.add("a:"+m);LABEL.set("a:"+m,CATS_BY.get(m).name)}}
+  const nk=norm(e.name); if(nk){set.add("i:"+nk); if(!LABEL.has("i:"+nk))LABEL.set("i:"+nk,(e.name||"").trim())}
+  for(const tok of ingTokens(e.ingredients)){ if(tok===nk)continue; if(detectText(tok).length)continue; set.add("g:"+tok); if(!LABEL.has("g:"+tok))LABEL.set("g:"+tok,cap(tok)) }
+  c=[...set]; COMP.set(e,c); return c;
+}
+function label(k){return LABEL.get(k)||cap(k.slice(2))}
+function kindName(k){return k[0]==="a"?"Allergen group":k[0]==="i"?"Item":"Ingredient"}
+function declaredOf(k){if(k[0]!=="a")return null;categories();const c=CATS_BY.get(k.slice(2));return c&&c.declared}
+
+/* ============================================================ analysis */
+function timeW(h,route){
+  if(h<0)return 0;
+  if(route==="contact")return h<=1?1:h<=12?.75:h<=72?.6:.2;
+  if(route==="inhale")return h<=1?1:h<=4?.7:h<=12?.45:h<=24?.3:.15;
+  return h<=2?1:h<=6?.75:h<=12?.5:h<=24?.35:h<=48?.2:.1;
+}
+let AN=null, AN_VER=-1;
+function analyze(){
+  if(AN&&AN_VER===VER)return AN;
+  categories();
+  const W=(S.settings.win||24)*HOUR;
+  const ex=[...S.exposures].sort((a,b)=>a.t-b.t), rx=[...S.reactions].sort((a,b)=>a.t-b.t);
+  const stats=new Map(); const st=k=>{let s=stats.get(k);if(!s){s={m:0,mr:0,k:new Set(),confirmed:0,gaps:[]};stats.set(k,s)}return s};
+  let followedAll=0;
+  for(const e of ex){
+    const followed=rx.some(r=>r.t>=e.t&&r.t-e.t<=W); if(followed)followedAll++;
+    for(const c of comps(e)){const s=st(c);s.m++;if(followed)s.mr++}
+  }
+  for(const r of rx){
+    const seen=new Set();
+    for(const e of ex){ if(e.t<=r.t&&r.t-e.t<=W){ for(const c of comps(e)){ const s=st(c); if(!seen.has(c)){s.k.add(r.id);s.gaps.push((r.t-e.t)/HOUR);seen.add(c)} } } }
+    if(r.confirmed){st(r.confirmed).confirmed++}
+  }
+  AN={W,stats,n:rx.length,nx:ex.length,base:ex.length?followedAll/ex.length:0};AN_VER=VER;return AN;
+}
+function strengthOf(k,s,A){
+  const rr=(s.mr+1)/(s.m+2), cover=A.n?s.k.size/A.n:0;
+  let v=Math.sqrt(cover*rr)*100; if(s.confirmed)v*=1+.35*s.confirmed; return Math.min(99,Math.round(v));
+}
+function rca(r){
+  const A=analyze(), W=A.W;
+  const win=S.exposures.filter(e=>e.t<=r.t&&r.t-e.t<=W).sort((a,b)=>b.t-a.t);
+  const cand=new Map();
+  for(const e of win){const gap=(r.t-e.t)/HOUR,f=timeW(gap,TYPE_BY[e.type]?TYPE_BY[e.type].route:"ingest");
+    for(const c of comps(e)){let x=cand.get(c);if(!x){x={key:c,T:0,exps:[]};cand.set(c,x)}x.exps.push({e,gap});if(f>x.T)x.T=f}}
+  const list=[...cand.values()].map(x=>{
+    const s=A.stats.get(x.key)||{m:1,mr:1,k:new Set([r.id]),confirmed:0};
+    const kind=x.key[0], decl=declaredOf(x.key);
+    const K=decl?1.5+.3*decl.severity:1, tw=kind==="a"?1:kind==="i"?.7:.5;
+    const rr=(s.mr+1)/(s.m+2), cover=A.n?s.k.size/A.n:1;
+    const conf=s.confirmed?1+.7*s.confirmed:1;
+    const raw=x.T*K*tw*(.3+rr)*(.5+cover)*conf;
+    return Object.assign(x,{s,kind,decl,rr,cover,raw});
+  }).sort((a,b)=>b.raw-a.raw);
+  const sum=list.reduce((a,b)=>a+b.raw,0)||1;
+  list.forEach(x=>{x.pct=Math.max(1,Math.round(100*x.raw/sum))});
+  return {win,list,A};
+}
+function evidence(x,r,A){
+  const out=[]; const best=x.exps.reduce((a,b)=>a.gap<b.gap?a:b);
+  const route=TYPE_BY[best.e.type]?TYPE_BY[best.e.type].route:"ingest";
+  const verb=route==="contact"?"Contact":route==="inhale"?"Exposure":"Consumed";
+  out.push({t:verb+" "+(best.gap<1/60?"right as":fmtGap(best.gap)+" before")+" symptoms began"+(x.kind!=="i"?" in “"+best.e.name+"”":""),c:best.gap<=2?"pos":""});
+  if(x.decl)out.push({t:"On your allergen list · "+SEV[x.decl.severity],c:"pos"});
+  const others=x.s.k.size-(x.s.k.has(r.id)?1:0);
+  if(A.n>1)out.push({t:others>0?"Also came before "+plural(others,"other reaction"):"Not present before any of your other reactions",c:others>0?"pos":"neg"});
+  const safe=x.s.m-x.s.mr;
+  if(x.s.m>1)out.push({t:plural(x.s.m,"exposure")+" logged · "+(safe>0?plural(safe,"time")+" with no reaction":"every one followed by a reaction"),c:safe>0?"neg":"pos"});
+  if(x.s.confirmed)out.push({t:"You confirmed it as the cause of "+plural(x.s.confirmed,"reaction"),c:"pos"});
+  return out;
+}
+
+/* ============================================================ sample data */
+function sampleData(){
+  const now=Date.now(); const at=(d,h,m)=>{const x=new Date(now-d*DAY);x.setHours(h,m||0,0,0);return x.getTime()};
+  const A=[{id:"s1",preset:"peanut",name:"Peanut",severity:4,keywords:[],notes:"Carry two epinephrine auto-injectors."},
+           {id:"s2",preset:"penicillin",name:"Penicillin",severity:2,keywords:[],notes:""},
+           {id:"s3",preset:"cat",name:"Cat dander",severity:1,keywords:["Sarah's apartment"],notes:""}];
+  const X=[];const R=[];
+  const x=(d,h,m,type,name,ing,where)=>{const e={id:"sx"+X.length,t:at(d,h,m),type,name,ingredients:ing||"",amount:"",where:where||"",notes:"",manual:[]};X.push(e);return e};
+  const r=(d,h,m,sev,sx,tr,dur,notes,conf)=>{R.push({id:"sr"+R.length,t:at(d,h,m),severity:sev,symptoms:sx,treatments:tr,duration:dur,notes:notes||"",confirmed:conf||null})};
+  x(20,8,0,"food","Oatmeal with blueberries","oats, milk, blueberries, honey");
+  x(20,12,30,"food","Turkey sandwich","wheat bread, turkey, lettuce, mayonnaise, cheddar");
+  x(20,19,0,"food","Shrimp scampi","shrimp, linguine, butter, garlic, white wine","Marco's Trattoria");
+  r(20,20,40,2,["Hives","Itching","Lip or face swelling"],["Antihistamine"],"1–3 hours","Hives on neck and arms.");
+  x(18,13,0,"food","Caesar salad","romaine, parmesan, croutons, anchovy dressing");
+  x(17,18,30,"food","Grilled salmon with rice","salmon, rice, lemon, olive oil");
+  x(16,10,0,"env","Visited Sarah's apartment","two cats, carpeted living room");
+  r(16,11,30,1,["Sneezing","Runny or stuffy nose","Itchy, watery eyes"],["Antihistamine"],"1–3 hours");
+  x(15,12,0,"food","Chicken burrito","flour tortilla, chicken, rice, black beans, cheese, salsa");
+  x(13,19,30,"food","Shrimp tacos","shrimp, corn tortilla, cabbage, lime, sour cream","Food truck");
+  r(13,21,0,2,["Hives","Stomach cramps"],["Antihistamine"],"3–12 hours");
+  x(12,8,0,"food","Greek yogurt with granola","yogurt, oats, almonds, honey");
+  x(11,12,30,"food","Thai chicken satay","chicken, peanut sauce, coconut milk, soy sauce","Office lunch");
+  r(11,12,50,4,["Throat tightness","Hives","Wheezing","Tingling mouth"],["Epinephrine","Urgent care / ER"],"3–12 hours","Used auto-injector, ER observation for 4 hours.","a:peanut");
+  x(9,18,0,"food","Spaghetti bolognese","spaghetti, ground beef, tomato, onion, parmesan");
+  x(8,12,0,"food","Sushi platter","tuna, salmon, rice, nori, soy sauce, wasabi");
+  x(7,8,0,"med","Ibuprofen 400 mg","ibuprofen");
+  x(6,19,0,"food","Seafood paella","rice, mussels, shrimp, chorizo, saffron","Casa Lola");
+  r(6,20,30,2,["Hives","Itching","Nausea"],["Antihistamine"],"1–3 hours");
+  x(5,12,30,"food","Lentil soup","lentils, carrot, onion, cumin");
+  x(4,18,30,"food","Cheeseburger","beef, burger bun, cheddar, lettuce, ketchup");
+  x(3,8,0,"food","Scrambled eggs and toast","eggs, butter, wheat toast");
+  x(2,13,0,"food","Beef pho","rice noodles, beef, fish sauce, basil, lime");
+  x(1,19,0,"food","Salmon poke bowl","salmon, rice, edamame, sesame seeds, avocado");
+  x(0,new Date().getHours()>=9?8:0,0,"food","Coffee with oat milk","coffee, oat milk");
+  return {allergens:A,exposures:X,reactions:R};
+}
+
+/* ============================================================ views */
+function demoBanner(){
+  if(!S.demo)return "";
+  return '<div class="banner">'+icon("info")+'<div><b>Sample data</b>Explore freely. Nothing here is saved.</div><button class="btn sm" data-act="startOwn">Start my log</button></div>';
+}
+function sevChip(sev,txt){return '<span class="chip s'+sev+'">'+esc(txt)+"</span>"}
+function expHits(e){categories();return comps(e).filter(k=>k[0]==="a").map(k=>({k,d:declaredOf(k)}))}
+function expRow(e){
+  const t=TYPE_BY[e.type]||TYPE_BY.other; const hits=expHits(e); const decl=hits.filter(h=>h.d).sort((a,b)=>b.d.severity-a.d.severity);
+  const top=decl[0]; const ic=top?(top.d.severity>=3?"hit3":"hit"):"";
+  const chips=decl.map(h=>sevChip(h.d.severity,label(h.k))).join("")+hits.filter(h=>!h.d).slice(0,3).map(h=>'<span class="chip">'+esc(label(h.k))+"</span>").join("");
+  return '<button class="row" data-act="openExp" data-id="'+e.id+'"><span class="tm">'+fmtTime(e.t)+'</span><span class="ic '+ic+'">'+icon(top?"alert":t.icon)+'</span><span class="main"><b>'+esc(e.name)+"</b>"+
+    (e.ingredients?'<span class="sub">'+esc(e.ingredients)+"</span>":"")+(chips?'<span class="chips">'+chips+"</span>":"")+'</span><span class="chev">'+icon("chev","sm")+"</span></button>";
+}
+function rxRow(r){
+  const c=r.confirmed?label(r.confirmed):(()=>{const R=rca(r);return R.list[0]?label(R.list[0].key):null})();
+  return '<button class="row" data-act="openRx" data-id="'+r.id+'"><span class="tm">'+fmtTime(r.t)+'</span><span class="ic rx">'+icon("bolt")+'</span><span class="main"><b>Reaction · '+RSEV[r.severity]+'</b><span class="sub">'+esc(r.symptoms.join(", ")||"No symptoms recorded")+'</span><span class="chips">'+sevChip(r.severity,RSEV[r.severity])+(c?'<span class="chip acc">'+(r.confirmed?"Cause: ":"Likely: ")+esc(c)+"</span>":"")+'</span></span><span class="chev">'+icon("chev","sm")+"</span></button>";
+}
+
+const IS_IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const IS_STANDALONE=window.navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches);
+function installCard(){
+  let dis=false;try{dis=localStorage.getItem(KEY+".installDismissed")==="1"}catch(_){}
+  if(IS_STANDALONE||dis)return "";
+  const share='<svg class="ico sm" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg>';
+  return '<div class="install"><div class="hd"><img src="icons/apple-touch-icon.png" alt=""><div><b>Install on your iPhone</b><span>It works offline and keeps your data on this phone.</span></div></div>'+
+    (IS_IOS?'<ol><li><span>In Safari, tap the Share button '+share+' (on newer iPhones, tap ··· first, then Share).</span></li><li><span>Scroll down and tap <b>Add to Home Screen</b>.</span></li><li><span>Leave <b>Open as Web App</b> on, then tap <b>Add</b>.</span></li><li><span>Open Allergen Tracker from your Home Screen.</span></li></ol>'
+      :'<p class="muted" style="margin:0;font-size:14px">Open this page in Safari on an iPhone, then use Share → Add to Home Screen.</p>')+
+    '<button class="btn ghost sm" style="align-self:flex-start" data-act="dismissInstall">Not now</button></div>';
+}
+function viewToday(){
+  const now=Date.now(); const last=[...S.reactions].sort((a,b)=>b.t-a.t)[0];
+  const free=last?Math.floor((startOfDay(now)-startOfDay(last.t))/DAY):null;
+  const todayEx=S.exposures.filter(e=>e.t>=startOfDay(now));
+  const weekAlerts=S.exposures.filter(e=>e.t>=now-7*DAY&&expHits(e).some(h=>h.d)).length;
+  const weekRx=S.reactions.filter(r=>r.t>=now-7*DAY).length;
+  const items=[...todayEx.map(e=>({t:e.t,h:expRow(e)})),...S.reactions.filter(r=>r.t>=startOfDay(now)).map(r=>({t:r.t,h:rxRow(r)}))].sort((a,b)=>b.t-a.t);
+  const A=analyze(); const trig=topTriggers(A).filter(t=>t.str>=40)[0];
+  const sug=suggestions(A)[0];
+  const d=new Date();
+  let h='<div class="eyebrow">'+d.toLocaleDateString([], {weekday:"long",month:"long",day:"numeric"})+'</div><h1 class="title">Today</h1>'+demoBanner();
+  h+=installCard();
+  let strip="";
+  for(let i=29;i>=0;i--){const s0=startOfDay(now)-i*DAY,s1=s0+DAY;
+    const rs=S.reactions.filter(r=>r.t>=s0&&r.t<s1);const xs=S.exposures.filter(e=>e.t>=s0&&e.t<s1);
+    let cls="",st="";if(rs.length){cls="r";st=' style="height:'+(14+4*Math.max(...rs.map(r=>r.severity)))+'px"'}else if(xs.some(e=>expHits(e).some(h=>h.d)))cls="a";else if(xs.length)cls="e";
+    strip+='<i class="'+cls+(i===0?" today":"")+'"'+st+' title="'+esc(fmtDay(s0))+'"></i>'}
+  h+='<section class="card"><div class="hero"><div class="hero-top"><span class="eyebrow">'+(last?"Reaction-free":"No reactions logged")+'</span>'+
+     (last?'<button class="btn ghost sm" data-act="openRx" data-id="'+last.id+'">Last · '+esc(fmtDay(last.t))+"</button>":"")+'</div>'+
+     '<div class="big">'+(last?free+'<span class="unit">'+(free===1?"day":"days")+"</span>":'0<span class="unit">reactions</span>')+'</div>'+
+     '<p class="lede">'+(last?"Since your last reaction on "+esc(new Date(last.t).toLocaleDateString([], {month:"long",day:"numeric"}))+".":"Log exposures as you go so patterns can surface.")+'</p>'+
+     '<div class="strip" role="img" aria-label="Activity over the last 30 days">'+strip+'</div>'+
+     '<div class="strip-legend"><span>30 days ago</span><span class="keys"><span><i style="background:color-mix(in srgb,var(--ink) 22%,transparent)"></i>Logged</span><span><i style="background:var(--warn)"></i>Alert</span><span><i style="background:var(--danger)"></i>Reaction</span></span><span>Today</span></div></div>'+
+     '<div class="stats"><div><b>'+todayEx.length+'</b><span>Exposures today</span></div><div><b style="color:'+(weekAlerts?"var(--warn)":"inherit")+'">'+weekAlerts+'</b><span>Alerts this week</span></div><div><b style="color:'+(weekRx?"var(--danger)":"inherit")+'">'+weekRx+'</b><span>Reactions this week</span></div></div></section>';
+  h+='<div class="quick" style="margin-top:10px"><button class="qbtn" data-act="newExp"><span class="badge">'+icon("food")+'</span><b>Log exposure</b><span>Food, medicine, contact, surroundings</span></button><button class="qbtn rx" data-act="newRx"><span class="badge">'+icon("bolt")+'</span><b>Log reaction</b><span>Symptoms, severity, treatment</span></button></div>';
+  if(trig||sug){
+    h+='<h2 class="sec">Watch list<button data-act="tab" data-tab="insights">Insights</button></h2><div class="stack">';
+    if(trig)h+='<button class="card pad" data-act="tab" data-tab="insights" style="text-align:left;display:flex;gap:14px;align-items:center">'+ring(trig.str,56,trig.decl?"var(--danger)":"var(--warn)")+'<div><div class="eyebrow" style="font-size:11px">Strongest pattern</div><div style="font-size:19px;font-weight:600;margin:2px 0">'+esc(label(trig.k))+'</div><div class="small muted">Came before '+trig.s.k.size+" of "+A.n+" reactions"+(trig.onset?" · typical onset "+fmtGap(trig.onset):"")+"</div></div></button>";
+    if(sug)h+='<div class="alert warn">'+icon("spark")+'<div><b>Possible new sensitivity: '+esc(label(sug.k))+'</b><p>It came before '+sug.s.k.size+' reactions and isn’t on your allergen list.</p><div style="margin-top:10px"><button class="btn sm" data-act="addSuggested" data-k="'+esc(sug.k)+'">Add to my allergens</button></div></div></div>';
+    h+="</div>";
+  }
+  h+='<h2 class="sec">Today’s log</h2>';
+  h+=items.length?'<div class="list">'+items.map(i=>i.h).join("")+"</div>":'<div class="card empty">'+icon("clock")+'<div>Nothing logged yet today.</div><div class="small">Tap + after you eat, take medicine or come into contact with something.</div></div>';
+  if(!S.allergens.length)h+='<div class="alert warn" style="margin-top:14px">'+icon("shield")+'<div><b>Add your allergens</b><p>Tell the app what you’re allergic to and it will warn you as you log.</p><div style="margin-top:10px"><button class="btn sm" data-act="addAllergen">Add allergens</button></div></div></div>';
+  return h;
+}
+function viewLog(){
+  let h='<div class="eyebrow">'+plural(S.exposures.length,"exposure")+" · "+plural(S.reactions.length,"reaction")+'</div><h1 class="title">Log</h1>'+demoBanner();
+  h+='<div class="stack" style="gap:10px"><div class="search">'+icon("search","sm")+'<input id="logq" placeholder="Search items, ingredients, symptoms" value="'+esc(LOGQ)+'" autocomplete="off"></div>'+
+     '<div class="seg" role="tablist">'+[["all","All"],["exp","Exposures"],["rx","Reactions"],["hit","Alerts"]].map(([v,l])=>'<button data-act="logf" data-v="'+v+'" class="'+(LOGFILTER===v?"on":"")+'">'+l+"</button>").join("")+"</div></div>";
+  h+='<div id="logList">'+logList()+"</div>";
+  return h;
+}
+function logList(){
+  const q=norm(LOGQ);
+  let items=[];
+  if(LOGFILTER!=="rx")for(const e of S.exposures){if(LOGFILTER==="hit"&&!expHits(e).some(h=>h.d))continue;if(q&&!norm(e.name+" "+e.ingredients+" "+e.where+" "+e.notes).includes(q))continue;items.push({t:e.t,h:expRow(e)})}
+  if(LOGFILTER==="all"||LOGFILTER==="rx")for(const r of S.reactions){if(q&&!norm(r.symptoms.join(" ")+" "+r.notes+" "+RSEV[r.severity]).includes(q))continue;items.push({t:r.t,h:rxRow(r)})}
+  items.sort((a,b)=>b.t-a.t);
+  if(!items.length)return '<div class="card empty" style="margin-top:16px">'+icon("search")+"<div>"+(q||LOGFILTER!=="all"?"No entries match.":"Your log is empty. Tap + to add your first entry.")+"</div></div>";
+  let h="",day=null;
+  for(const it of items){const d=fmtDay(it.t);if(d!==day){if(day!==null)h+="</div>";h+='<div class="dayhead">'+esc(d)+'</div><div class="list">';day=d}h+=it.h}
+  return h+"</div>";
+}
+function topTriggers(A){
+  const out=[];
+  for(const [k,s] of A.stats){
+    if(!s.k.size)continue; if(k[0]!=="a"&&(s.k.size<2||s.mr/s.m<.4))continue;
+    const g=s.gaps.slice().sort((a,b)=>a-b); const onset=g.length?g[Math.floor(g.length/2)]:null;
+    out.push({k,s,str:strengthOf(k,s,A),decl:declaredOf(k),onset});
+  }
+  return out.sort((a,b)=>b.str-a.str);
+}
+function suggestions(A){return topTriggers(A).filter(t=>!t.decl&&t.s.k.size>=2&&t.str>=45&&(t.s.mr/t.s.m)>=.5)}
+function ring(v,size,color,unit){
+  const r=15.5,c=2*Math.PI*r;
+  return '<div class="ring" style="width:'+size+'px;height:'+size+'px"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="'+r+'" fill="none" stroke="var(--surface-2)" stroke-width="2"/><circle cx="18" cy="18" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-dasharray="'+(c*v/100).toFixed(1)+" "+c.toFixed(1)+'"/></svg><span class="v num" style="font-size:'+Math.round(size*.33)+'px">'+v+(unit?'<small style="font-size:.5em">'+unit+"</small>":"")+"</span></div>";
+}
+function viewInsights(){
+  const A=analyze();
+  let h='<div class="eyebrow">Patterns across '+plural(A.n,"reaction")+'</div><h1 class="title">Insights</h1>'+demoBanner();
+  if(!A.n){return h+'<div class="card empty">'+icon("spark")+'<div>Insights appear once you’ve logged a reaction.</div><div class="small">Keep logging exposures as you go. When a reaction happens, the app looks back through them to find the cause.</div></div>'}
+  const trig=topTriggers(A).slice(0,7), sug=suggestions(A);
+  h+='<div class="stack">';
+  for(const s of sug)h+='<div class="alert warn">'+icon("spark")+'<div><b>Possible new sensitivity: '+esc(label(s.k))+'</b><p>Came before '+s.s.k.size+" of "+A.n+" reactions, and "+s.s.mr+" of "+s.s.m+' exposures were followed by a reaction. Worth raising with your allergist.</p><div style="margin-top:10px"><button class="btn sm" data-act="addSuggested" data-k="'+esc(s.k)+'">Add to my allergens</button></div></div></div>';
+  h+="</div>";
+  h+='<h2 class="sec">Suspected triggers</h2><div class="list">';
+  if(!trig.length)h+='<div class="empty">Not enough overlap between exposures and reactions yet.</div>';
+  for(const t of trig){
+    const cls=t.decl?"d":t.str>=45?"w":"";
+    h+='<div class="trig"><div><b>'+esc(label(t.k))+'</b><span class="kind">'+kindName(t.k)+'</span>'+(t.decl?" "+sevChip(t.decl.severity,"Known"):"")+'</div><span class="num" style="font-weight:600">'+t.str+'</span><div class="bar '+cls+'"><i style="width:'+t.str+'%"></i></div><div class="meta">Before '+t.s.k.size+" of "+A.n+" reactions · "+t.s.mr+"/"+t.s.m+" exposures followed by a reaction"+(t.onset!=null?" · onset ~"+fmtGap(t.onset):"")+"</div></div>";
+  }
+  h+='</div><p class="foot" style="margin-top:8px">Score (0–100) combines how often something appears before your reactions with how often exposure to it leads to one. Confirmed causes count extra.</p>';
+  // weekly chart
+  h+='<h2 class="sec">Reactions by week</h2><div class="card chart">'+weekChart()+"</div>";
+  // symptoms
+  const sc={};for(const r of S.reactions)for(const s of r.symptoms)sc[s]=(sc[s]||0)+1;
+  const sl=Object.entries(sc).sort((a,b)=>b[1]-a[1]).slice(0,6); const mx=sl.length?sl[0][1]:1;
+  h+='<h2 class="sec">Most common symptoms</h2><div class="card" style="padding:8px 0">'+sl.map(([s,c])=>'<div class="hbar"><span>'+esc(s)+'</span><span class="t"><i style="width:'+(100*c/mx)+'%;background:'+(DANGER_SX.has(s)?"var(--danger)":"var(--accent)")+'"></i></span><span class="c">'+c+"</span></div>").join("")+"</div>";
+  // tolerated
+  const safe=[...A.stats.entries()].filter(([k,s])=>k[0]!=="g"&&s.m>=2&&s.mr===0&&!declaredOf(k)).sort((a,b)=>b[1].m-a[1].m).slice(0,10);
+  if(safe.length)h+='<h2 class="sec">Tolerated well</h2><div class="card pad"><div class="chips">'+safe.map(([k,s])=>'<span class="chip ok">'+icon("check","sm")+esc(label(k))+" ×"+s.m+"</span>").join("")+'</div><p class="foot" style="margin:10px 0 0;padding:0">Logged at least twice with no reaction afterward.</p></div>';
+  h+='<h2 class="sec">Share</h2><div class="list settings"><button class="srow" data-act="report">'+icon("doc")+'<span>Summary for your allergist</span>'+icon("chev","sm")+"</button></div>";
+  return h;
+}
+function weekChart(){
+  const weeks=8, now=Date.now(), w0=startOfDay(now)-((new Date().getDay()+6)%7)*DAY; // monday
+  const bins=[];for(let i=weeks-1;i>=0;i--){const s=w0-i*7*DAY;bins.push({s,e:s+7*DAY,c:0,max:0})}
+  for(const r of S.reactions)for(const b of bins)if(r.t>=b.s&&r.t<b.e){b.c++;b.max=Math.max(b.max,r.severity)}
+  const mx=Math.max(2,...bins.map(b=>b.c)); const W=320,H=130,pl=22,pb=22,bw=(W-pl)/weeks;
+  let s='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="Reactions per week, last 8 weeks">';
+  for(let g=0;g<=mx;g++){const y=H-pb-(H-pb-10)*g/mx; s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>'+(g%Math.ceil(mx/3)===0||g===mx?'<text x="'+(pl-6)+'" y="'+(y+3)+'" text-anchor="end">'+g+"</text>":"")}
+  bins.forEach((b,i)=>{const x=pl+i*bw+bw*.3,w=bw*.4,h=(H-pb-10)*b.c/mx,y=H-pb-h;
+    if(b.c)s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2" fill="var(--sev'+b.max+')"/><text x="'+(x+w/2)+'" y="'+(y-4)+'" text-anchor="middle" style="fill:var(--ink);font-weight:600">'+b.c+"</text>";
+    const d=new Date(b.s);s+='<text x="'+(x+w/2)+'" y="'+(H-6)+'" text-anchor="middle">'+(d.getMonth()+1)+"/"+d.getDate()+"</text>"});
+  return s+'</svg><div class="chips" style="padding:8px 10px 0">'+[1,2,3,4].map(i=>'<span class="chip"><span class="dot" style="background:var(--sev'+i+')"></span>'+RSEV[i]+"</span>").join("")+"</div>";
+}
+function viewAllergens(){
+  let h='<div class="eyebrow">Your profile</div><h1 class="title">My allergens</h1>'+demoBanner();
+  const list=[...S.allergens].sort((a,b)=>b.severity-a.severity);
+  h+='<div class="list">';
+  if(!list.length)h+='<div class="empty">'+icon("shield")+'<div>No allergens added yet.</div><div class="small">Add the things you’re allergic to and the app will flag them while you log.</div></div>';
+  for(const a of list){const p=a.preset&&DICT_BY[a.preset];const n=uniq([...(p?p.kw:[]),...(a.keywords||[])]).length;
+    h+='<button class="alg" data-act="editAllergen" data-id="'+a.id+'"><span class="sw" style="background:var(--sev'+a.severity+')"></span><span class="main"><b>'+esc(a.name)+"</b><span>"+SEV[a.severity]+" · watching "+plural(n+1,"term")+(a.notes?" · "+esc(a.notes):"")+'</span></span><span class="chev" style="color:var(--faint)">'+icon("chev","sm")+"</span></button>"}
+  h+='</div><div style="margin-top:12px"><button class="btn block" data-act="addAllergen">'+icon("plus")+" Add allergen</button></div>";
+  const th=S.settings.theme||"system";
+  h+='<h2 class="sec">Appearance</h2><div class="card pad"><div class="seg">'+[["system","System"],["light","Light"],["dark","Dark"]].map(([v,l])=>'<button data-act="theme" data-v="'+v+'" class="'+(th===v?"on":"")+'">'+l+"</button>").join("")+'</div><p class="foot" style="margin:10px 0 0;padding:0">System matches your iPhone’s setting.</p></div>';
+  h+='<h2 class="sec">Analysis</h2><div class="card pad"><div class="flabel" style="margin-bottom:8px">Look-back window for root cause analysis</div><div class="seg">'+[6,12,24,48,72].map(v=>'<button data-act="win" data-v="'+v+'" class="'+(S.settings.win===v?"on":"")+'">'+v+"h</button>").join("")+'</div><p class="foot" style="margin:10px 0 0;padding:0">Most food reactions start within 2 hours. Widen the window if you get delayed reactions, such as contact rashes.</p></div>';
+  h+='<h2 class="sec">Data</h2><div class="list settings">'+
+    '<div class="srow">'+icon(syncState==="cloud"?"cloud":"phone")+"<span>"+(S.demo?"Sample data isn’t saved":"Saved privately on this iPhone")+"</span><em>"+(syncState==="cloud"?"Private to you":"")+"</em></div>"+
+    '<button class="srow" data-act="report">'+icon("doc")+"<span>Summary for your allergist</span>"+icon("chev","sm")+"</button>"+
+    '<button class="srow" data-act="export">'+icon("download")+"<span>Back up data</span>"+icon("chev","sm")+"</button>"+
+    '<button class="srow" data-act="import">'+icon("upload")+"<span>Restore from backup</span>"+icon("chev","sm")+"</button>"+
+    (S.demo?'<button class="srow" data-act="startOwn">'+icon("plus")+"<span>Clear sample data and start my log</span></button>":'<button class="srow dz" data-act="wipe">'+icon("trash")+"<span>Delete all data</span></button>")+"</div>";
+  h+='<p class="foot" style="margin-top:14px">Allergen Tracker helps you spot patterns. It doesn’t diagnose allergies or replace your doctor. In an emergency, use your epinephrine if prescribed and call 911 or your local emergency number.</p>';
+  return h;
+}
+function render(){
+  const v=TAB==="log"?viewLog():TAB==="insights"?viewInsights():TAB==="allergens"?viewAllergens():viewToday();
+  const vw=$("#view"); vw.innerHTML=v;
+  if(render.last!==TAB){vw.classList.remove("enter");void vw.offsetWidth;vw.classList.add("enter");render.last=TAB;clearTimeout(render.tt);render.tt=setTimeout(()=>vw.classList.remove("enter"),900)}
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===TAB));
+  const q=$("#logq"); if(q)q.addEventListener("input",()=>{LOGQ=q.value;$("#logList").innerHTML=logList()});
+}
+
+/* ============================================================ sheets */
+let sheetOnClose=null;
+function openSheet(html,mount){
+  const b=$("#sheetBody"); b.innerHTML=html; b.scrollTop=0;
+  $("#sheet").classList.add("open");$("#scrim").classList.add("open");document.body.style.overflow="hidden";
+  if(mount)mount(b);
+}
+function closeSheet(){$("#sheet").classList.remove("open");$("#scrim").classList.remove("open");document.body.style.overflow="";$("#sheet").style.transform="";if(sheetOnClose){const f=sheetOnClose;sheetOnClose=null;f()}}
+function head(l,title,r,rAct){return '<div class="sh-head"><button class="l" data-act="close">'+l+"</button><h3>"+esc(title)+"</h3>"+(r?'<button class="r" data-act="'+rAct+'">'+r+"</button>":"<span></span>")+"</div>"}
+let toastT=null;
+function toast(msg,danger){const t=$("#toast");t.innerHTML=(danger?icon("alert","sm"):icon("check","sm"))+"<span>"+esc(msg)+"</span>";t.className="toast show"+(danger?" danger":"");clearTimeout(toastT);toastT=setTimeout(()=>t.className="toast"+(danger?" danger":""),2600)}
+
+function sheetAdd(){
+  openSheet(head("Cancel","New entry")+'<div class="stack"><button class="qbtn" data-act="newExp" style="flex-direction:row;align-items:center;gap:14px"><span class="badge">'+icon("food")+'</span><span style="display:flex;flex-direction:column;gap:2px"><b>Log exposure</b><span>Something you ate, took, touched or were around</span></span></button>'+
+    '<button class="qbtn rx" data-act="newRx" style="flex-direction:row;align-items:center;gap:14px"><span class="badge">'+icon("bolt")+'</span><span style="display:flex;flex-direction:column;gap:2px"><b>Log reaction</b><span>Symptoms you’re having or had</span></span></button>'+
+    '<button class="qbtn" data-act="addAllergen" style="flex-direction:row;align-items:center;gap:14px"><span class="badge">'+icon("shield")+'</span><span style="display:flex;flex-direction:column;gap:2px"><b>Add an allergen</b><span>Something you know you react to</span></span></button></div>');
+}
+
+/* ---- exposure form ---- */
+function sheetExp(e){
+  const ed=!!e&&!e._new; e=e||{type:"food",t:Date.now(),name:"",ingredients:"",amount:"",where:"",notes:"",manual:[]};
+  const names=uniq(S.exposures.map(x=>x.name.trim())).slice(0,200);
+  categories();
+  const manualChips=S.allergens.map(a=>'<button class="tog dangerous'+((e.manual||[]).includes(catId(a))?" on":"")+'" data-act="tog" data-v="'+esc(catId(a))+'">'+esc(a.name)+"</button>").join("");
+  openSheet(head("Cancel",ed?"Edit exposure":"Log exposure","Save","saveExp")+
+   '<form class="form" id="expForm" onsubmit="return false">'+
+   '<div class="seg types" id="xType">'+TYPES.map(t=>'<button type="button" data-act="seg" data-v="'+t.id+'" class="'+(t.id===e.type?"on":"")+'">'+icon(t.icon)+"<span>"+t.short+"</span></button>").join("")+"</div>"+
+   '<label class="field"><span>What was it?</span><input id="xName" list="xNames" autocomplete="off" placeholder="e.g. Pad thai from Lotus Kitchen" value="'+esc(e.name)+'"></label>'+
+   '<datalist id="xNames">'+names.map(n=>'<option value="'+esc(n)+'">').join("")+"</datalist>"+
+   '<label class="field"><span>Ingredients or details</span><textarea id="xIng" rows="3" placeholder="Paste the ingredient list or describe what was in it">'+esc(e.ingredients)+"</textarea></label>"+
+   '<div id="xAlert" class="alerts" aria-live="polite"></div>'+
+   (S.allergens.length?'<div class="field"><span>Contains or may contain</span><div class="chips" id="xManual">'+manualChips+"</div></div>":"")+
+   '<div class="row2"><label class="field"><span>When</span><input type="datetime-local" id="xTime" value="'+toInput(e.t)+'"></label><label class="field"><span>Amount</span><input id="xAmt" placeholder="1 bowl" value="'+esc(e.amount)+'"></label></div>'+
+   '<label class="field"><span>Where</span><input id="xWhere" placeholder="Home, restaurant, office" value="'+esc(e.where)+'"></label>'+
+   '<label class="field"><span>Notes</span><textarea id="xNotes" rows="2" placeholder="Anything else worth remembering">'+esc(e.notes)+"</textarea></label>"+
+   '<button type="button" class="btn block" data-act="saveExp" id="xSave">Save exposure</button>'+
+   (ed?'<button type="button" class="btn block ghost" style="color:var(--danger)" data-act="delExp">'+icon("trash")+" Delete</button>":"")+
+   '<p class="foot">Matching uses ingredient keywords. Always read labels and ask about preparation when eating out.</p></form>',
+   b=>{
+     b.dataset.editId=ed?e.id:"";
+     const nm=$("#xName"),ing=$("#xIng");
+     const upd=()=>updateExpAlert();
+     nm.addEventListener("input",()=>{ upd(); });
+     nm.addEventListener("change",()=>{const k=norm(nm.value);if(!ing.value.trim()){const prev=[...S.exposures].sort((a,b)=>b.t-a.t).find(x=>norm(x.name)===k);if(prev){ing.value=prev.ingredients||"";segSet("xType",prev.type);toast("Filled in from your last “"+prev.name+"”")}}upd()});
+     ing.addEventListener("input",upd);
+     updateExpAlert(true);
+     if(!ed)setTimeout(()=>{try{nm.focus({preventScroll:true})}catch(_){}} ,350);
+   });
+}
+function segSet(id,v){document.querySelectorAll("#"+id+" button").forEach(b=>b.classList.toggle("on",b.dataset.v===v))}
+function segGet(id){const b=document.querySelector("#"+id+" button.on");return b?b.dataset.v:null}
+function togGet(id){return [...document.querySelectorAll("#"+id+" .tog.on")].map(b=>b.dataset.v)}
+let lastAlertSig="";
+function expWarnings(name,ing,manual){
+  categories();
+  const t=norm(name+" , "+ing); const hits=detectText(t); const ids=new Set(hits.map(h=>h.cat.id));
+  for(const m of manual)if(!ids.has(m)&&CATS_BY.has(m)){hits.push({cat:CATS_BY.get(m),kw:null});ids.add(m)}
+  const declared=hits.filter(h=>h.cat.declared).sort((a,b)=>b.cat.declared.severity-a.cat.declared.severity);
+  const other=hits.filter(h=>!h.cat.declared);
+  const cross=[];for(const x of CROSS){const c=CATS_BY.get(x.a);if(!c||!c.declared||ids.has(x.a))continue;const kw=x.kw.find(k=>kwRe(k).test(t));if(kw)cross.push({cat:c,kw,note:x.note})}
+  const A=analyze(); const hist=[];
+  if(norm(name)||ing.trim()){
+    for(const k of comps({name,ingredients:ing,manual})){const s=A.stats.get(k);if(!s||!s.k.size||declaredOf(k))continue;if(k[0]==="g"&&s.k.size<2)continue;hist.push({k,s})}
+    hist.sort((a,b)=>b.s.k.size-a.s.k.size);
+  }
+  return {declared,other,cross,hist,empty:!t};
+}
+function updateExpAlert(force){
+  const el=$("#xAlert"); if(!el)return;
+  const name=$("#xName").value, ing=$("#xIng").value, manual=togGet("xManual");
+  const w=expWarnings(name,ing,manual);
+  let h="";
+  for(const d of w.declared){const a=d.cat.declared;const sev=a.severity;
+    h+='<div class="alert '+(sev>=3?"danger":"warn")+'">'+icon("alert")+"<div><b>Contains "+esc(d.cat.name)+"</b><p>On your allergen list as "+SEV[sev].toLowerCase()+"."+(d.kw?" Matched “"+esc(d.kw.toLowerCase())+"”.":" You marked it.")+(a.notes?" "+esc(a.notes):"")+(sev>=3?" If you’ve already had it and symptoms start, follow your emergency plan.":"")+"</p></div></div>"}
+  for(const c of w.cross)h+='<div class="alert warn">'+icon("link")+"<div><b>Possible cross-reaction with "+esc(c.cat.name)+"</b><p>“"+esc(c.kw)+"”. "+esc(c.note)+"</p></div></div>";
+  for(const x of w.hist.slice(0,3))h+='<div class="alert warn">'+icon("history")+"<div><b>"+esc(label(x.k))+" came before "+plural(x.s.k.size,"reaction")+"</b><p>"+x.s.mr+" of "+plural(x.s.m,"past exposure")+" were followed by a reaction within "+S.settings.win+" hours.</p></div></div>";
+  const oth=w.other.filter(o=>!w.hist.some(x=>x.k==="a:"+o.cat.id));
+  if(oth.length)h+='<div class="chips" style="padding:2px 2px 0"><span class="small muted" style="margin-right:2px">Also contains</span>'+oth.map(o=>'<span class="chip">'+esc(o.cat.name)+"</span>").join("")+"</div>";
+  if(!w.empty&&!w.declared.length&&!w.cross.length&&!w.hist.length&&S.allergens.length)h+='<div class="alert ok">'+icon("check")+"<div><b>No matches with your allergens</b><p>Nothing in this entry matches your list or your reaction history.</p></div></div>";
+  const sig=h; if(sig===lastAlertSig&&!force)return; lastAlertSig=sig;
+  el.innerHTML=h; if(w.declared.length&&!force)el.firstElementChild.classList.add("pulse");
+  const sv=$("#xSave"); if(sv){const top=w.declared[0];sv.className="btn block"+(top&&top.cat.declared.severity>=3?" danger":"");sv.textContent=top?"Log anyway":"Save exposure"}
+}
+function saveExp(){
+  const name=$("#xName").value.trim(); if(!name){$("#xName").focus();toast("Add what it was first",true);return}
+  const editId=$("#sheetBody").dataset.editId;
+  const e={id:editId||uid(),t:fromInput($("#xTime").value),type:segGet("xType")||"food",name,ingredients:$("#xIng").value.trim(),amount:$("#xAmt").value.trim(),where:$("#xWhere").value.trim(),notes:$("#xNotes").value.trim(),manual:togGet("xManual")};
+  if(editId){const i=S.exposures.findIndex(x=>x.id===editId);if(i>=0)S.exposures[i]=e}else S.exposures.push(e);
+  bump();persistExp(e);
+  const top=expHits(e).filter(h=>h.d).sort((a,b)=>b.d.severity-a.d.severity)[0];
+  closeSheet();render();
+  toast(top?"Logged · contains "+label(top.k):(editId?"Changes saved":"Exposure logged"),!!top);
+}
+
+/* ---- reaction form ---- */
+function sheetRx(r){
+  const ed=!!r; r=r||{t:Date.now(),severity:2,symptoms:[],treatments:[],duration:"",notes:""};
+  openSheet(head("Cancel",ed?"Edit reaction":"Log reaction","Save","saveRx")+
+   '<form class="form" id="rxForm" onsubmit="return false"><div id="sos"></div>'+
+   '<label class="field"><span>When did symptoms start?</span><input type="datetime-local" id="rTime" value="'+toInput(r.t)+'"></label>'+
+   '<div class="field"><span>Symptoms</span><div class="stack" id="rSx" style="gap:12px">'+SYMPTOMS.map(g=>'<div class="group"><div class="gl">'+g.g+'</div><div class="chips">'+g.items.map(s=>'<button type="button" class="tog'+(DANGER_SX.has(s)?" dangerous":"")+(r.symptoms.includes(s)?" on":"")+'" data-act="tog" data-v="'+esc(s)+'">'+esc(s)+"</button>").join("")+"</div></div>").join("")+"</div></div>"+
+   '<div class="field"><span>How bad was it?</span><div class="seg sev" id="rSev">'+[1,2,3,4].map(i=>'<button type="button" data-act="seg" data-v="'+i+'" class="'+(r.severity===i?"on":"")+'">'+(i===4?"Severe+":RSEV[i])+"</button>").join("")+'</div><span class="small muted" id="sevHint" style="font-weight:400"></span></div>'+
+   '<div class="field"><span>Treatment</span><div class="chips" id="rTx">'+TREATMENTS.map(s=>'<button type="button" class="tog'+(r.treatments.includes(s)?" on":"")+'" data-act="tog" data-v="'+esc(s)+'">'+esc(s)+"</button>").join("")+"</div></div>"+
+   '<label class="field"><span>How long did it last?</span><select id="rDur"><option value="">Not sure</option>'+DURATIONS.map(d=>'<option'+(r.duration===d?" selected":"")+">"+d+"</option>").join("")+"</select></label>"+
+   '<label class="field"><span>Notes</span><textarea id="rNotes" rows="2" placeholder="Where on your body, what helped, photos taken">'+esc(r.notes)+"</textarea></label>"+
+   '<button type="button" class="btn block" data-act="saveRx">'+(ed?"Save changes":"Save and find the cause")+"</button>"+
+   (ed?'<button type="button" class="btn block ghost" style="color:var(--danger)" data-act="delRx">'+icon("trash")+" Delete</button>":"")+"</form>",
+   b=>{b.dataset.editId=ed?r.id:"";updateSos()});
+}
+const SEVHINT=["","Uncomfortable but limited to one area.","Spread out or kept going; needed medicine.","Affected breathing, throat or several body systems.","Anaphylaxis: needed epinephrine or emergency care."];
+function updateSos(){
+  const el=$("#sos");if(!el)return;const sx=togGet("rSx"),sev=+segGet("rSev"),tx=togGet("rTx");
+  const danger=sx.some(s=>DANGER_SX.has(s))||sev>=3||tx.includes("Epinephrine");
+  el.innerHTML=danger?'<div class="alert sos">'+icon("sos")+"<div><b>If this is happening now, get help</b><p>Trouble breathing, throat tightness or fainting can be anaphylaxis. Use epinephrine if prescribed and call 911 or your local emergency number.</p></div></div>":"";
+  const h=$("#sevHint");if(h)h.textContent=SEVHINT[sev]||"";
+}
+function saveRx(){
+  const sx=togGet("rSx"); if(!sx.length){toast("Pick at least one symptom",true);return}
+  const editId=$("#sheetBody").dataset.editId; const prev=editId&&S.reactions.find(x=>x.id===editId);
+  const r={id:editId||uid(),t:fromInput($("#rTime").value),severity:+segGet("rSev")||2,symptoms:sx,treatments:togGet("rTx"),duration:$("#rDur").value,notes:$("#rNotes").value.trim(),confirmed:prev?prev.confirmed||null:null};
+  if(prev)S.reactions[S.reactions.indexOf(prev)]=r;else S.reactions.push(r);
+  bump();persistRx(r);render();sheetRxDetail(r);toast(editId?"Changes saved":"Reaction logged");
+}
+
+/* ---- reaction detail with RCA ---- */
+function sheetRxDetail(r){
+  const R=rca(r), A=R.A, top=R.list[0];
+  let h=head("Done","Reaction","Edit","editRx")+'<div class="eyebrow">'+esc(fmtWhen(r.t))+'</div><div class="sh-title">'+RSEV[r.severity]+" reaction</div>";
+  h+='<div class="chips" style="margin:6px 0 14px">'+sevChip(r.severity,RSEV[r.severity])+r.symptoms.map(s=>'<span class="chip'+(DANGER_SX.has(s)?" s3":"")+'">'+esc(s)+"</span>").join("")+"</div>";
+  h+='<div class="card"><dl class="kv"><dt>Treatment</dt><dd>'+esc(r.treatments.join(", ")||"None recorded")+"</dd><dt>Lasted</dt><dd>"+esc(r.duration||"Not recorded")+"</dd>"+(r.notes?"<dt>Notes</dt><dd>"+esc(r.notes)+"</dd>":"")+"</dl></div>";
+  h+='<h2 class="sec">Root cause analysis</h2>';
+  if(!top){
+    h+='<div class="card empty">'+icon("search")+"<div>No exposures logged in the "+S.settings.win+' hours before this reaction.</div><div class="small">Log what you ate, touched or were around, and the analysis will update. You can also widen the look-back window on the Allergens tab.</div><div style="margin-top:12px"><button class="btn sm" data-act="newExpAt" data-t="'+(r.t-HOUR)+'">Log an earlier exposure</button></div></div>';
+  } else {
+    const conf=r.confirmed;
+    h+='<div class="card">';
+    if(conf)h+='<div class="confirmed">'+icon("check","sm")+"Confirmed cause: "+esc(label(conf))+'<button data-act="unconfirm" data-id="'+r.id+'">Undo</button></div>';
+    const lead=conf?(R.list.find(x=>x.key===conf)||top):top;
+    const col=lead.decl?"var(--danger)":"var(--warn)";
+    h+='<div class="rca-top">'+ring(lead.pct,84,col,"%")+'<div><div class="k">'+(conf?"Your confirmed cause":"Most likely cause")+'</div><div class="n">'+esc(label(lead.key))+'</div><div class="chips"><span class="chip">'+kindName(lead.key)+"</span>"+(lead.decl?sevChip(lead.decl.severity,"On your list"):'<span class="chip s2">Not on your list</span>')+"</div></div></div>";
+    h+='<ul class="ev">'+evidence(lead,r,A).map(e=>'<li class="'+e.c+'">'+icon(e.c==="neg"?"check":e.c==="pos"?"alert":"info","sm")+"<span>"+esc(e.t)+"</span></li>").join("")+"</ul>";
+    if(!conf)h+='<div style="padding:0 18px 16px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-act="confirm" data-id="'+r.id+'" data-k="'+esc(lead.key)+'">'+icon("check","sm")+" Confirm as cause</button>"+(!lead.decl&&lead.kind!=="g"?'<button class="btn sm ghost" data-act="addSuggested" data-k="'+esc(lead.key)+'">Add to allergens</button>':"")+"</div>";
+    const rest=R.list.filter(x=>x!==lead).slice(0,6);
+    for(const x of rest){
+      h+='<details class="cand"><summary><span><b>'+esc(label(x.key))+'</b><span class="kind">'+kindName(x.key)+'</span></span><span class="pct">'+x.pct+'%</span><span class="bar '+(x.decl?"d":"")+'"><i style="width:'+x.pct+'%"></i></span></summary><ul class="ev">'+evidence(x,r,A).map(e=>'<li class="'+e.c+'">'+icon(e.c==="neg"?"check":e.c==="pos"?"alert":"info","sm")+"<span>"+esc(e.t)+"</span></li>").join("")+'</ul><div class="acts"><button class="btn sm ghost" data-act="confirm" data-id="'+r.id+'" data-k="'+esc(x.key)+'">Confirm as cause</button></div></details>';
+    }
+    const more=R.list.length-1-rest.length; if(more>0)h+='<div class="foot" style="padding:10px 16px">'+plural(more,"other ingredient")+" considered with lower likelihood.</div>";
+    h+="</div>";
+    h+='<p class="foot" style="margin-top:8px">Likelihood weighs timing, your allergen list, and how often each item has come before your reactions versus being tolerated. Confirming a cause teaches the analysis for future reactions. This is not a diagnosis.</p>';
+    h+='<h2 class="sec">'+S.settings.win+' hours before</h2><div class="card tl">';
+    h+='<div class="it r"><span class="g">'+fmtTime(r.t)+"</span><b>Symptoms began</b></div>";
+    for(const e of R.win){const hits=expHits(e).filter(x=>x.d);h+='<button class="it" style="width:100%;text-align:left" data-act="openExp" data-id="'+e.id+'"><span class="g">'+fmtGap((r.t-e.t)/HOUR)+' before</span><span><b style="font-weight:600">'+esc(e.name)+"</b>"+(hits.length?" "+hits.map(x=>sevChip(x.d.severity,label(x.k))).join(" "):"")+'<br><span class="small muted">'+esc(TYPE_BY[e.type]?TYPE_BY[e.type].label:"")+" · "+esc(fmtWhen(e.t))+"</span></span></button>"}
+    h+="</div>";
+  }
+  openSheet(h,b=>{b.dataset.rxId=r.id});
+}
+
+/* ---- exposure detail ---- */
+function sheetExpDetail(e){
+  const t=TYPE_BY[e.type]||TYPE_BY.other; const w=expWarnings(e.name,e.ingredients,e.manual||[]);
+  const after=S.reactions.filter(r=>r.t>=e.t&&r.t-e.t<=S.settings.win*HOUR).sort((a,b)=>a.t-b.t);
+  let h=head("Done",t.label,"Edit","editExp")+'<div class="eyebrow">'+esc(fmtWhen(e.t))+'</div><div class="sh-title">'+esc(e.name)+"</div>";
+  h+='<div class="alerts" style="margin:10px 0 14px">';
+  for(const d of w.declared)h+='<div class="alert '+(d.cat.declared.severity>=3?"danger":"warn")+'">'+icon("alert")+"<div><b>Contains "+esc(d.cat.name)+"</b><p>"+SEV[d.cat.declared.severity]+" allergen"+(d.kw?" · matched “"+esc(d.kw)+"”":" · marked by you")+"</p></div></div>";
+  for(const c of w.cross)h+='<div class="alert warn">'+icon("link")+"<div><b>Possible cross-reaction with "+esc(c.cat.name)+"</b><p>"+esc(c.note)+"</p></div></div>";
+  h+="</div>";
+  h+='<div class="card"><dl class="kv">'+(e.ingredients?"<dt>Contents</dt><dd>"+esc(e.ingredients)+"</dd>":"")+(e.amount?"<dt>Amount</dt><dd>"+esc(e.amount)+"</dd>":"")+(e.where?"<dt>Where</dt><dd>"+esc(e.where)+"</dd>":"")+(e.notes?"<dt>Notes</dt><dd>"+esc(e.notes)+"</dd>":"")+
+     (w.other.length?"<dt>Also has</dt><dd>"+w.other.map(o=>esc(o.cat.name)).join(", ")+"</dd>":"")+"</dl></div>";
+  h+='<h2 class="sec">Reactions in the next '+S.settings.win+" hours</h2>";
+  h+=after.length?'<div class="list">'+after.map(rxRow).join("")+"</div>":'<div class="card empty" style="padding:18px">'+icon("check")+"<div>No reaction logged afterward.</div></div>";
+  h+='<div style="margin-top:14px" class="stack"><button class="btn block ghost" data-act="dupExp">'+icon("copy")+" Log this again now</button></div>";
+  openSheet(h,b=>{b.dataset.expId=e.id});
+}
+
+/* ---- allergens ---- */
+function sheetAllergenPicker(){
+  const have=new Set(S.allergens.map(a=>a.preset).filter(Boolean));
+  const grp=(g,t)=>'<div class="gl" style="font-size:12px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:16px 4px 8px">'+t+'</div><div class="presets">'+DICT.filter(d=>d.g===g).map(d=>'<button class="preset'+(have.has(d.id)?" added":"")+'" data-act="preset" data-v="'+d.id+'">'+(have.has(d.id)?icon("check","sm"):"")+esc(d.name)+"</button>").join("")+"</div>";
+  openSheet(head("Done","Add allergen")+'<div class="sh-title">What are you allergic to?</div><p class="muted" style="margin:4px 0 0">Pick a common allergen and the app will watch for its hidden names too, like whey and casein for milk.</p>'+
+    grp("food","Food")+grp("med","Medication")+grp("env","Environment & contact")+
+    '<div style="margin-top:18px"><button class="btn block ghost" data-act="customAllergen">'+icon("plus")+" Something else</button></div>");
+}
+function sheetAllergenForm(a,preset){
+  const ed=!!a; const p=preset?DICT_BY[preset]:(a&&a.preset?DICT_BY[a.preset]:null);
+  a=a||{id:uid(),preset:preset||null,name:p?p.name:"",severity:3,keywords:[],notes:""};
+  openSheet(head("Cancel",ed?"Edit allergen":"New allergen","Save","saveAllergen")+'<form class="form" onsubmit="return false">'+
+    '<label class="field"><span>Name</span><input id="aName" placeholder="e.g. Kiwi, Chlorhexidine, Brand X sunscreen" value="'+esc(a.name)+'"></label>'+
+    '<div class="field"><span>How severe are your reactions?</span><div class="seg sev" id="aSev">'+[1,2,3,4].map(i=>'<button type="button" data-act="seg" data-v="'+i+'" class="'+(a.severity===i?"on":"")+'">'+SEV[i]+"</button>").join("")+"</div></div>"+
+    (p?'<div class="field"><span>Already watching for '+p.kw.length+' related terms</span><div class="chips">'+p.kw.slice(0,14).map(k=>'<span class="chip">'+esc(k)+"</span>").join("")+(p.kw.length>14?'<span class="chip">+'+(p.kw.length-14)+" more</span>":"")+"</div></div>":"")+
+    '<label class="field"><span>Other words to watch for</span><input id="aKw" placeholder="Brand names, dishes, other spellings — comma separated" value="'+esc((a.keywords||[]).join(", "))+'"></label>'+
+    '<label class="field"><span>Notes</span><input id="aNotes" placeholder="e.g. Carry two auto-injectors" value="'+esc(a.notes)+'"></label>'+
+    '<button type="button" class="btn block" data-act="saveAllergen">'+(ed?"Save changes":"Add allergen")+"</button>"+
+    (ed?'<button type="button" class="btn block ghost" style="color:var(--danger)" data-act="delAllergen">'+icon("trash")+" Remove from my list</button>":"")+"</form>",
+    b=>{b.dataset.aid=a.id;b.dataset.preset=a.preset||"";b.dataset.ed=ed?"1":"";if(!p&&!ed)setTimeout(()=>{try{$("#aName").focus()}catch(_){}} ,350)});
+}
+function saveAllergen(){
+  const b=$("#sheetBody"); const name=$("#aName").value.trim(); if(!name){toast("Give it a name",true);return}
+  const a={id:b.dataset.aid,preset:b.dataset.preset||null,name,severity:+segGet("aSev")||3,keywords:$("#aKw").value.split(",").map(s=>s.trim()).filter(Boolean),notes:$("#aNotes").value.trim()};
+  const i=S.allergens.findIndex(x=>x.id===a.id); if(i>=0)S.allergens[i]=a;else S.allergens.push(a);
+  bump();persistProfile();render();
+  if(b.dataset.ed){closeSheet();toast("Saved")}else{toast(name+" added");sheetAllergenPicker()}
+}
+
+/* ---- report / backup ---- */
+function reportText(){
+  const A=analyze(); const L=[];
+  L.push("ALLERGY LOG SUMMARY · "+new Date().toLocaleDateString());
+  const first=Math.min(...S.exposures.map(e=>e.t),...S.reactions.map(r=>r.t));
+  if(isFinite(first))L.push("Period: "+new Date(first).toLocaleDateString()+" – "+new Date().toLocaleDateString()+" · "+S.exposures.length+" exposures, "+S.reactions.length+" reactions");
+  L.push("","KNOWN ALLERGENS");
+  if(!S.allergens.length)L.push("  None recorded");
+  for(const a of [...S.allergens].sort((x,y)=>y.severity-x.severity))L.push("  • "+a.name+" ("+SEV[a.severity]+")"+(a.notes?" – "+a.notes:""));
+  L.push("","REACTIONS");
+  for(const r of [...S.reactions].sort((a,b)=>b.t-a.t)){const R=rca(r);const c=r.confirmed?label(r.confirmed)+" (confirmed)":R.list[0]?label(R.list[0].key)+" ("+R.list[0].pct+"% likely)":"unknown";
+    L.push("  • "+fmtWhen(r.t)+" – "+RSEV[r.severity]+": "+r.symptoms.join(", "));
+    L.push("    Treatment: "+(r.treatments.join(", ")||"none")+(r.duration?" · Lasted "+r.duration:""));
+    L.push("    Likely cause: "+c);
+    const pre=R.win.slice(0,4).map(e=>e.name+" ("+fmtGap((r.t-e.t)/HOUR)+" before)");if(pre.length)L.push("    Preceded by: "+pre.join("; "));}
+  const t=topTriggers(A).slice(0,6);
+  if(t.length){L.push("","SUSPECTED TRIGGERS (pattern score 0–100)");for(const x of t)L.push("  • "+label(x.k)+": "+x.str+" – before "+x.s.k.size+"/"+A.n+" reactions; "+x.s.mr+"/"+x.s.m+" exposures followed by a reaction"+(x.decl?" [known allergen]":""))}
+  const sug=suggestions(A);if(sug.length){L.push("","TO DISCUSS");for(const s of sug)L.push("  • Possible sensitivity to "+label(s.k)+" (not on known list)")}
+  L.push("","Generated by Allergen Tracker. Patterns are not a diagnosis.");
+  return L.join("\n");
+}
+function sheetText(title,text,note){
+  openSheet(head("Done",title,"Copy","copyText")+(note?'<p class="muted" style="margin:0 0 10px">'+note+"</p>":"")+'<pre class="report" id="txt">'+esc(text)+'</pre><div style="margin-top:12px"><button class="btn block" data-act="copyText">'+icon("copy")+" Copy</button></div>");
+}
+function sheetImport(){
+  openSheet(head("Cancel","Restore","Restore","doImport")+'<p class="muted" style="margin:0 0 10px">Paste a backup you copied earlier. This replaces everything currently in the app.</p><textarea id="impTxt" rows="10" placeholder="Paste backup here"></textarea><div style="margin-top:12px"><button class="btn block" data-act="doImport">Restore backup</button></div>');
+}
+let wipeArm=false;
+
+/* ============================================================ actions */
+function findExp(id){return S.exposures.find(x=>x.id===id)}
+function findRx(id){return S.reactions.find(x=>x.id===id)}
+const ACT={
+  tab:t=>{TAB=t.dataset.tab;try{history.replaceState(null,"","#"+TAB)}catch(_){location.hash=TAB}closeSheet();render();window.scrollTo(0,0)},
+  add:()=>sheetAdd(),
+  close:()=>closeSheet(),
+  newExp:()=>sheetExp(),
+  newExpAt:t=>{sheetExp({type:"food",t:+t.dataset.t,name:"",ingredients:"",amount:"",where:"",notes:"",manual:[],_new:true});$("#sheetBody").dataset.editId=""},
+  newRx:()=>sheetRx(),
+  seg:t=>{const p=t.parentElement;p.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b===t));if(p.id==="rSev")updateSos()},
+  tog:t=>{t.classList.toggle("on");t.setAttribute("aria-pressed",t.classList.contains("on"));const p=t.closest("[id]");
+    if(p&&p.id==="xManual")updateExpAlert();
+    if(p&&p.id==="rTx"){if(t.dataset.v==="None"&&t.classList.contains("on"))p.querySelectorAll(".tog").forEach(b=>{if(b!==t)b.classList.remove("on")});else if(t.dataset.v!=="None")p.querySelector('[data-v="None"]').classList.remove("on")}
+    if(p&&(p.id==="rSx"||p.id==="rTx"||p.closest("#rSx")))updateSos()},
+  saveExp:()=>saveExp(),
+  saveRx:()=>saveRx(),
+  openExp:t=>{const e=findExp(t.dataset.id);if(e)sheetExpDetail(e)},
+  openRx:t=>{const r=findRx(t.dataset.id);if(r)sheetRxDetail(r)},
+  editExp:()=>{const e=findExp($("#sheetBody").dataset.expId);if(e)sheetExp(e)},
+  editRx:()=>{const r=findRx($("#sheetBody").dataset.rxId);if(r)sheetRx(r)},
+  dupExp:()=>{const e=findExp($("#sheetBody").dataset.expId);if(!e)return;const n=Object.assign({},e,{id:uid(),t:Date.now()});S.exposures.push(n);bump();persistExp(n);closeSheet();render();const top=expHits(n).filter(h=>h.d)[0];toast(top?"Logged · contains "+label(top.k):"Logged again",!!top)},
+  delExp:t=>{if(t.dataset.arm!=="1"){t.dataset.arm="1";t.innerHTML=icon("trash")+" Tap again to delete";return}const id=$("#sheetBody").dataset.editId;S.exposures=S.exposures.filter(x=>x.id!==id);bump();removeDoc("x-"+id);closeSheet();render();toast("Deleted")},
+  delRx:t=>{if(t.dataset.arm!=="1"){t.dataset.arm="1";t.innerHTML=icon("trash")+" Tap again to delete";return}const id=$("#sheetBody").dataset.editId;S.reactions=S.reactions.filter(x=>x.id!==id);bump();removeDoc("r-"+id);closeSheet();render();toast("Deleted")},
+  confirm:t=>{const r=findRx(t.dataset.id);if(!r)return;r.confirmed=t.dataset.k;bump();persistRx(r);render();sheetRxDetail(r);toast("Cause confirmed: "+label(t.dataset.k))},
+  unconfirm:t=>{const r=findRx(t.dataset.id);if(!r)return;r.confirmed=null;bump();persistRx(r);render();sheetRxDetail(r)},
+  addAllergen:()=>sheetAllergenPicker(),
+  customAllergen:()=>sheetAllergenForm(null,null),
+  preset:t=>{const ex=S.allergens.find(a=>a.preset===t.dataset.v);sheetAllergenForm(ex||null,ex?null:t.dataset.v)},
+  editAllergen:t=>{const a=S.allergens.find(x=>x.id===t.dataset.id);if(a)sheetAllergenForm(a)},
+  saveAllergen:()=>saveAllergen(),
+  delAllergen:t=>{if(t.dataset.arm!=="1"){t.dataset.arm="1";t.innerHTML=icon("trash")+" Tap again to remove";return}const id=$("#sheetBody").dataset.aid;S.allergens=S.allergens.filter(a=>a.id!==id);bump();persistProfile();closeSheet();render();toast("Removed")},
+  addSuggested:t=>{const k=t.dataset.k;if(k[0]==="a"&&DICT_BY[k.slice(2)])sheetAllergenForm(null,k.slice(2));else{sheetAllergenForm(null,null);$("#aName").value=label(k)}},
+  dismissInstall:()=>{try{localStorage.setItem(KEY+".installDismissed","1")}catch(_){}render()},
+  win:t=>{S.settings.win=+t.dataset.v;bump();persistProfile();render()},
+  theme:t=>{S.settings.theme=t.dataset.v;applyTheme();if(S.demo){try{localStorage.setItem(KEY+".theme",t.dataset.v)}catch(_){}}else persistProfile();render();toast(t.dataset.v==="system"?"Matching your system appearance":(t.dataset.v==="dark"?"Dark":"Light")+" mode on")},
+  logf:t=>{LOGFILTER=t.dataset.v;render()},
+  report:()=>sheetText("Allergist summary",reportText(),"Copy this into an email or your patient portal message."),
+  export:()=>sheetText("Backup",JSON.stringify({app:"allergen-tracker",v:1,exported:new Date().toISOString(),allergens:S.allergens,exposures:S.exposures,reactions:S.reactions,settings:S.settings}),"Copy and keep this somewhere safe, like Notes. Restore it from this tab any time."),
+  import:()=>sheetImport(),
+  doImport:()=>{let j;try{j=JSON.parse($("#impTxt").value)}catch(_){toast("That doesn’t look like a backup",true);return}
+    if(!j||!Array.isArray(j.exposures)||!Array.isArray(j.reactions)){toast("That doesn’t look like a backup",true);return}
+    const old=S.demo?null:{x:S.exposures.map(e=>e.id),r:S.reactions.map(r=>r.id)};
+    S.demo=false;S.allergens=j.allergens||[];S.exposures=j.exposures;S.reactions=j.reactions;S.settings=Object.assign({win:24},j.settings||{});bump();
+    if(old){old.x.forEach(id=>{if(!S.exposures.some(e=>e.id===id))removeDoc("x-"+id)});old.r.forEach(id=>{if(!S.reactions.some(r=>r.id===id))removeDoc("r-"+id)})}
+    persistProfile();S.exposures.forEach(persistExp);S.reactions.forEach(persistRx);closeSheet();render();toast("Backup restored")},
+  copyText:async()=>{const t=$("#txt").textContent;try{await navigator.clipboard.writeText(t);toast("Copied")}catch(_){const r=document.createRange();r.selectNodeContents($("#txt"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Selected. Tap Copy in the menu")}},
+  startOwn:()=>{S.demo=false;S.allergens=[];S.exposures=[];S.reactions=[];S.settings={win:24,theme:S.settings.theme};bump();persistProfile();TAB="today";render();sheetAllergenPicker();toast("Fresh start. Add your allergens first")},
+  wipe:t=>{if(!wipeArm){wipeArm=true;t.querySelector("span").textContent="Tap again to delete everything";setTimeout(()=>{wipeArm=false},4000);return}
+    wipeArm=false;S.exposures.forEach(e=>removeDoc("x-"+e.id));S.reactions.forEach(r=>removeDoc("r-"+r.id));S.allergens=[];S.exposures=[];S.reactions=[];bump();persistProfile();render();toast("All data deleted")}
+};
+document.addEventListener("click",ev=>{const t=ev.target.closest("[data-act]");if(!t)return;const f=ACT[t.dataset.act];if(f){ev.preventDefault();f(t,ev)}});
+
+/* drag-to-dismiss */
+(function(){let y0=null,dy=0;const g=$("#grab"),sh=$("#sheet");
+  g.addEventListener("pointerdown",e=>{y0=e.clientY;dy=0;sh.style.transition="none";g.setPointerCapture(e.pointerId)});
+  g.addEventListener("pointermove",e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);sh.style.transform="translateY("+dy+"px)"});
+  const end=()=>{if(y0==null)return;sh.style.transition="";y0=null;if(dy>110)closeSheet();else sh.style.transform=""};
+  g.addEventListener("pointerup",end);g.addEventListener("pointercancel",end);
+})();
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#sheet").classList.contains("open"))closeSheet()});
+window.addEventListener("hashchange",()=>{const h=location.hash.replace("#","");if(["today","log","insights","allergens"].includes(h)&&h!==TAB){TAB=h;render()}});
+
+/* ============================================================ boot & sync */
+function applyTheme(){const t=S.settings.theme||"system";const r=document.documentElement;if(t==="system")r.removeAttribute("data-appearance");else r.setAttribute("data-appearance",t);try{localStorage.setItem(KEY+".theme",t)}catch(_){}}
+function applyData(d){const keep=S.settings.theme;S.allergens=d.allergens||[];S.exposures=d.exposures||[];S.reactions=d.reactions||[];S.settings=Object.assign({win:24},d.settings||{});if(!S.settings.theme&&keep)S.settings.theme=keep;bump();applyTheme()}
+(function(){try{const t=localStorage.getItem(KEY+".theme");if(t&&t!=="system"){S.settings.theme=t;document.documentElement.setAttribute("data-appearance",t)}}catch(_){}})();
+(function boot(){
+  const L=loadLocal();
+  if(L&&L.started){applyData(L);S.demo=false}else{applyData(sampleData());S.demo=true}
+  render();
+  const L2=document.getElementById("launch");setTimeout(()=>L2.classList.add("gone"),IS_STANDALONE?1500:600);
+  if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+})();
+async function connect(){
+  if(!window.claude||typeof window.claude.use!=="function")return;
+  try{
+    const user=await window.claude.use("user"); const id=user?await user.id():null;
+    const db=await window.claude.use("db"); if(!db||!id)return;
+    col=db.collection("data/users/"+id);
+    let first=true;
+    col.onSnapshot(snap=>{
+      if(snap.metadata&&snap.metadata.hasPendingWrites)return;
+      if(snap.empty){
+        if(first&&!(snap.metadata&&snap.metadata.fromCache)){first=false;syncState="cloud";
+          if(!S.demo){persistProfile();S.exposures.forEach(persistExp);S.reactions.forEach(persistRx)}
+          if(TAB==="allergens"&&!$("#sheet").classList.contains("open"))render();}
+        return;
+      }
+      first=false;syncState="cloud";
+      const d={allergens:[],exposures:[],reactions:[],settings:{win:24}};let started=false;
+      for(const doc of snap.docs){const v=doc.data();if(!v)continue;
+        if(doc.id==="profile"){d.allergens=v.allergens||[];d.settings=v.settings||d.settings;started=!!v.started}
+        else if(doc.id.startsWith("x-"))d.exposures.push(v);else if(doc.id.startsWith("r-"))d.reactions.push(v)}
+      if(!started&&!d.exposures.length&&!d.reactions.length)return;
+      S.demo=false;applyData(d);saveLocal();
+      if(!$("#sheet").classList.contains("open"))render();
+    },()=>{});
+  }catch(_){}
+}
+</script>
+</body>
+</html>
